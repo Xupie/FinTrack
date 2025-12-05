@@ -213,11 +213,56 @@ if ($action === 'update_income') {
 // =================================================
 //   add expence
 // =================================================
+if ($action === 'add_expence') {
+    $data = json_decode(file_get_contents("php://input"), true);
+    $description = trim($data['description']);
+    $category_id = trim($data['category']);
+    $amount = trim($data['amount']);
+    $created_datetime = date('Y-m-d H:i:s');
 
+    if ($description === "" || $category_id === "" || $amount === "") {
+        http_response_code(400);
+        error("Fill all fields");
+    }
+
+    if (!ctype_digit($id)) {
+        http_response_code(400);
+        error("Invalid id");
+    }
+
+    $stmt = $conn->prepare("
+        INSERT INTO expence (description, category_id, amount, created_at, user_id)
+        VALUES (?, ?, ?, ?, ?)
+    ");
+
+    if (!$stmt->execute([$description, $_SESSION['user_id'], $category_id, $amount, $created_datetime])) {
+        http_response_code(400);
+        error("DB Error");
+    }
+
+    response(["status" => "ok"]);
+}
 // =================================================
 //   delete expence
 // =================================================
+if ($action === 'delete_expence') {
+    $data = json_decode(file_get_contents("php://input"), true);
+    $id = trim($data['id']);
 
+    if (!ctype_digit($id)) {
+        http_response_code(400);
+        error("Invalid id");
+    }
+
+    $stmt = $conn->prepare("DELETE FROM income WHERE id = ?");
+
+    if (!$stmt->execute([$id])) {
+        http_response_code(400);
+        error("DB Error");
+    }
+
+    response(["status" => "ok"]);
+}
 // =================================================
 //   edit expence
 // =================================================
