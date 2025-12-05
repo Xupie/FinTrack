@@ -30,8 +30,10 @@ if ($method == 'POST') {
 
         if (password_verify($password, $user['password_hash'])) {
             $_SESSION['username'] = $username;
+            $_SESSION['logged_in'] = true;
             http_response_code(200);
             echo json_encode(["status" => "Kirjautuminen onnistui"]);
+            exit;
         } else {
             http_response_code(400);
             echo json_encode(["error" => "Virhe käyttäjätunnuksessa tai salasanassa"]);
