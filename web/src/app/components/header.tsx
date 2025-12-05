@@ -35,7 +35,7 @@ export default function Header() {
 
                     <div className='flex items-center gap-4'>
                         <Button size="md" type="primary" text='Log In' onClick={() => router.push('/login')} />
-                        <Button size="md" type="outlined" text='Register' onClick={() => router.push('/Register')} />
+                        <Button size="md" type="outlined" text='Register' onClick={() => router.push('/register')} />
                         <ThemeSwitch />
                     </div>
                 </div>
