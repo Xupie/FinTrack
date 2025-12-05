@@ -1,7 +1,10 @@
 services:
 
   api:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      target: api
     ports:
       - "8080:80"
     volumes:
@@ -10,14 +13,21 @@ services:
     depends_on:
       - db
 
+#
   web:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      target: web-development
     ports:
-      - "3001:80"
+      - "3001:3001"
     volumes:
-      - ./web:/var/www/html/web
+      - ./web:/usr/src/app/web
+      - /usr/src/app/node_modules
     depends_on:
       - db
+    environment:
+      - NODE_ENV=development
 
   db:
     image: mysql:8.4.7
