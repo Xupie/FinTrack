@@ -35,7 +35,7 @@ export default function Header() {
 
                     <div className='flex items-center gap-4'>
                         <Button size="md" type="primary" text='Log In' onClick={() => router.push('/login')} />
-                        <Button size="md" type="outlined" text='Sign Up' onClick={() => router.push('/signup')} />
+                        <Button size="md" type="outlined" text='Register' onClick={() => router.push('/Register')} />
                         <ThemeSwitch />
                     </div>
                 </div>
@@ -64,7 +64,7 @@ export default function Header() {
                             ))}
                             <div className='grid grid-cols-2 gap-4 my-4'>
                                 <Button size="md" type="primary" text='Log In' onClick={() => router.push('/login')} />
-                                <Button size="md" type="outlined" text='Sign Up' onClick={() => router.push('/signup')} />
+                                <Button size="md" type="outlined" text='Register' onClick={() => router.push('/register')} />
                             </div>
 
                             <div className='flex ms-auto items-center gap-4'>
