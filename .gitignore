@@ -1,2 +1,2 @@
-.env
-mysql_data
+/.env
+/mysql_data

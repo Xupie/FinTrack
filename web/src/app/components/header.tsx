@@ -4,14 +4,15 @@ import { useState } from 'react';
 import ThemeSwitch from './themeChanger/themeChanger';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
+import Button from './buttons/button';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
+    const router = useRouter();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const navLinks = [
-        { href: '/', label: 'Home' },
-        { href: '/about', label: 'About' },
-        { href: '/login', label: 'Login' },
+        { href: '/', label: 'FinTrack' }
     ]
 
     const handleClick = () => {
@@ -33,6 +34,8 @@ export default function Header() {
                     </ul>
 
                     <div className='flex items-center gap-4'>
+                        <Button size="md" type="primary" text='Log In' onClick={() => router.push('/login')} />
+                        <Button size="md" type="outlined" text='Sign Up' onClick={() => router.push('/signup')} />
                         <ThemeSwitch />
                     </div>
                 </div>
@@ -59,6 +62,11 @@ export default function Header() {
                                     <Link className={`w-full nav-link`} onClick={() => handleClick()} href={href}>{label}</Link>
                                 </li>
                             ))}
+                            <div className='grid grid-cols-2 gap-4 my-4'>
+                                <Button size="md" type="primary" text='Log In' onClick={() => router.push('/login')} />
+                                <Button size="md" type="outlined" text='Sign Up' onClick={() => router.push('/signup')} />
+                            </div>
+
                             <div className='flex ms-auto items-center gap-4'>
                                 <ThemeSwitch />
                             </div>
@@ -72,18 +80,18 @@ export default function Header() {
 }
 
 export function HamburgerMenu() {
-  const { resolvedTheme } = useTheme();
-  return (
-    <Image
-      src={
-        resolvedTheme === "dark"
-          ? `/hamburger-menu/hamburger-menu-white.svg`
-          : `/hamburger-menu/hamburger-menu.svg`}
-      alt={"icon of mobile navigation menu"}
-      width={36}
-      height={36}
-      className={"hover"}
-      unoptimized={true}
-    />
-  );
+    const { resolvedTheme } = useTheme();
+    return (
+        <Image
+            src={
+                resolvedTheme === "dark"
+                    ? `/hamburger-menu/hamburger-menu-white.svg`
+                    : `/hamburger-menu/hamburger-menu.svg`}
+            alt={"icon of mobile navigation menu"}
+            width={36}
+            height={36}
+            className={"hover"}
+            unoptimized={true}
+        />
+    );
 }

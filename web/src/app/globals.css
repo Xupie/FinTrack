@@ -6,7 +6,8 @@
   --background: #171717;
   --foreground: #ffffff;
 
-  --color-primary: #4f46e5;
+  --color-primary: #7b46e5;
+  --color-primary-hover: #6639c2;
 
   --color-surface-light: #e5e7eb;
 }
@@ -14,6 +15,8 @@
 [data-theme='light'] {
   --background: #ffffff;
   --foreground: #171717;
+
+  --color-primary-hover: #9565f4;
 }
 
 @theme inline {
@@ -24,6 +27,7 @@
   --font-mono: var(--font-geist-mono);
 
   --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
   --color-surface-light: var(--color-surface-light);
 }
 
@@ -59,4 +63,13 @@ body {
     transition: cubic-bezier();
     transition-duration: 350ms;
   }
+}
+
+.btn {
+    transition: cubic-bezier();
+    transition-duration: 350ms;
+}
+.btn:hover {
+    transition: cubic-bezier();
+    transition-duration: 350ms;
 }
