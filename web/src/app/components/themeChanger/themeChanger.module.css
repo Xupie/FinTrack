@@ -1,0 +1,26 @@
+.theme-switch {
+  background-color: var(--color-surface-light);
+  position: relative;
+  width: 2.75rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  transition: background-color 250ms ease;
+
+  /* slider */
+  &::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    inset-inline-start: 2px;
+    height: 1.25rem;
+    width: 1.25rem;
+    transition: all 250ms ease;
+    background-color: white;
+    border-radius: 100%;
+  }
+
+  /* Dark mode */
+  input:checked+& {
+    background-color: var(--color-primary);
+  }
+}
