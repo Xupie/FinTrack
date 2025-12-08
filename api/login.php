@@ -31,6 +31,7 @@ if ($method == 'POST') {
         if (password_verify($password, $user['password_hash'])) {
             $_SESSION['username'] = $username;
             $_SESSION['logged_in'] = true;
+            $_SESSION['user_id'] = $user['id'];
             http_response_code(200);
             echo json_encode(["status" => "Kirjautuminen onnistui"]);
             exit;
