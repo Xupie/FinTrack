@@ -10,6 +10,13 @@ services:
     volumes:
       - ./api:/var/www/html/api
       - .env:/var/www/html/.env
+      - ./apache-cors.conf:/etc/apache2/conf-enabled/cors.conf
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
     depends_on:
       - db
 
