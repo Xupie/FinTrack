@@ -16,3 +16,23 @@
     background-color: var(--color-primary-hover);
     color: var(--color-foreground);
 }
+
+
+.btn-cancel {
+    color: var(--color-cancel-text);
+    background-color: var(--color-cancel);
+    font-weight: bolder;
+}
+.btn-cancel:hover {
+    color: var(--color-foreground);
+    background-color: var(--color-cancel-hover);
+}
+
+.btn {
+    transition: cubic-bezier();
+    transition-duration: 350ms;
+}
+.btn:hover {
+    transition: cubic-bezier();
+    transition-duration: 350ms;
+}

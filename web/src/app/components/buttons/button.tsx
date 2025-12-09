@@ -6,6 +6,7 @@ type buttonSize = (typeof buttonSizes)[number];
 export const buttonType = [
     'primary',
     'outlined',
+    'cancel'
 ] as const;
 type buttonType = (typeof buttonType)[number];
 
@@ -41,7 +42,7 @@ export default function Button(
     return (
         <button
             type="button"
-            className={`btn ${styles[`btn-${type}`]} ${rounded ? 'rounded-lg' : ''}`}
+            className={`${styles[`btn`]} ${styles[`btn-${type}`]} ${rounded ? 'rounded-lg' : ''}`}
             style={{
                 opacity,
                 cursor: disabled ? "not-allowed" : "pointer",
