@@ -310,7 +310,7 @@ if ($action === 'sorted_by_day') {
     $user_id = $_SESSION['user_id'];
 
     $date = isset($data['date']) ? trim($data['date']) : null; // YYYY-MM-DD
-    $category_id = isset($data['category_id']) ? intval($data['category_id']) : null; // фильтр по категории
+    $category_id = isset($data['category_id']) ? intval($data['category_id']) : null; // filter by category
 
     if (!$date) {
         http_response_code(400);
