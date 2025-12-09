@@ -3,36 +3,65 @@ import { Pie } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [
-        {
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-            ],
-            borderWidth: 1,
-        },
-    ],
+type Transaction = {
+    id: number;
+    description: string;
+    amount: string | number;
+    type: string;
+    created_at: string;
+    category_name: string;
 };
 
-export default function PieChart() {
+type BudgetData = {
+    income: number;
+    expense: number;
+    nettobudjetti: number;
+    transactions: Transaction[];
+};
 
-    return (
-        <Pie data={data} />
-    )
+export default function PieChart({ data }: { data: BudgetData }) {
+
+    // group by category
+    const incomeByCategory: Record<string, number> = {};
+    const expenseByCategory: Record<string, number> = {};
+    data.transactions.forEach(tx => {
+        const category = tx.category_name;
+        const amount = parseFloat(tx.amount as string);
+
+        if (tx.type === "income") {
+            incomeByCategory[category] = (incomeByCategory[category] || 0) + amount;
+        } else if (tx.type === "expense") {
+            expenseByCategory[category] = (expenseByCategory[category] || 0) + amount;
+        }
+    });
+
+    const allCategories = Array.from(new Set([
+        ...Object.keys(incomeByCategory),
+        ...Object.keys(expenseByCategory)
+    ]));
+
+    const incomeData = allCategories.map(cat => incomeByCategory[cat] || 0);
+    const expenseData = allCategories.map(cat => expenseByCategory[cat] || 0);
+
+    const chartData = {
+        labels: allCategories,
+        datasets: [
+            {
+                label: "Income",
+                data: incomeData,
+                backgroundColor: "rgba(54, 162, 235, 0.6)",
+                borderColor: "rgba(54, 162, 235, 1)",
+                borderWidth: 1,
+            },
+            {
+                label: "Expense",
+                data: expenseData,
+                backgroundColor: "rgba(255, 99, 132, 0.6)",
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 1,
+            }
+        ]
+    };
+
+    return <Pie data={chartData} />;
 }
