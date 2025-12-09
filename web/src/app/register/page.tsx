@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Button from "../components/buttons/button";
+import InputWithIcon from "../components/input";
 
 export default function Register() {
     const router = useRouter();
@@ -50,11 +51,15 @@ export default function Register() {
 
     return (
         <main>
-            <label htmlFor="username">Username</label>
-            <input type="text" name="username" />
+            <div className="">
+                <label htmlFor="username">Username</label>
+                <InputWithIcon name="username" placeholder="username" icon="/email/email.svg" required />
+            </div>
 
-            <label htmlFor="password">Password</label>
-            <input type="password" name="password" />
+            <div>
+                <label htmlFor="password">Password</label>
+                <InputWithIcon name="password" placeholder="password" icon="/password/password.svg" required />
+            </div>
 
             <Button onClick={sendRegister} disabled={loading} size="lg" text="Register" type="primary" />
             {error
