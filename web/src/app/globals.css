@@ -9,7 +9,11 @@
   --color-primary: #7b46e5;
   --color-primary-hover: #6639c2;
 
-  --color-surface-light: #e5e7eb;
+  --color-cancel: #f75044;
+  --color-cancel-text: #9c423e;
+  --color-cancel-hover: #df463b;
+
+  --color-surface: #232323;
 }
 
 [data-theme='light'] {
@@ -17,6 +21,7 @@
   --foreground: #171717;
 
   --color-primary-hover: #9565f4;
+  --color-surface: #f0f0f0;
 }
 
 @theme inline {
@@ -28,7 +33,7 @@
 
   --color-primary: var(--color-primary);
   --color-primary-hover: var(--color-primary-hover);
-  --color-surface-light: var(--color-surface-light);
+  --color-surface: var(--color-surface);
 }
 
 body {
@@ -65,11 +70,6 @@ body {
   }
 }
 
-.btn {
-    transition: cubic-bezier();
-    transition-duration: 350ms;
-}
-.btn:hover {
-    transition: cubic-bezier();
-    transition-duration: 350ms;
+input {
+  outline: none;
 }
