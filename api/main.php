@@ -45,6 +45,28 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     error("käyttäjä ei ole kirjautunut sisään");
     exit;
 }
+// =================================================
+//   show all categories
+// =================================================
+if ($action === "show_categories") {
+    $user_id = $_SESSION['user_id'];
+
+    
+    $stmt = $conn->prepare("
+        SELECT id, category_name, type
+        FROM category
+        WHERE user_id = ?
+        ORDER BY category_name ASC
+    ");
+
+    $stmt->bind_param("i", $user_id); 
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $rows = $result->fetch_all(MYSQLI_ASSOC); 
+
+    response($rows);
+}
 
 // =================================================
 //   add category
