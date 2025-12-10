@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "../buttons/button";
+import Button from "../../../../components/buttons/button";
 
 type Category = {
     category_name: string;
