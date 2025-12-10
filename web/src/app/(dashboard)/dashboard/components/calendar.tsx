@@ -1,3 +1,5 @@
+"use client"
+
 export default function Calendar({
     date,
     onChangeDate

@@ -31,7 +31,6 @@ type categoryType = {
 
 export default function Dashboard() {
     const router = useRouter();
-
     const [newTransactionVisible, setNewTransactionVisible] = useState(false);
     const [budget, setBudget] = useState<budgetType | null>(null);
     const [categories, setCategories] = useState<categoryType>([]);
@@ -48,9 +47,7 @@ export default function Dashboard() {
                 credentials: 'include',
             });
 
-            if (response.status === 401) {
-                router.push("/login");
-            }
+            if (response.status === 401) router.push("/login");
 
             if (!response.ok) {
                 console.error("Failed to fetch category data");
@@ -90,10 +87,6 @@ export default function Dashboard() {
             }),
         });
 
-        if (response.status === 401) {
-            router.push("/login");
-        }
-
         if (!response.ok) {
             console.log("Failed to fetch data");
         }
@@ -127,10 +120,9 @@ export default function Dashboard() {
 
     return (
         <main className="max-w-7xl mx-auto">
-            <Mobile_nav onClickNewTransaction={onClickNewTransaction}/>
+            <Mobile_nav onClickNewTransaction={onClickNewTransaction} />
             {newTransactionVisible && (
                 <NewTransaction categories={categories} createTransaction={createTransaction} cancel={onClickNewTransaction} />
-                
             )}
             <div className="sm:grid sm:grid-cols-2 m-4 sm:m-8">
                 <div className="sm:max-w-2/3 p-6 mx-auto">
@@ -144,22 +136,13 @@ export default function Dashboard() {
                     <Calendar date={selectedDate} onChangeDate={setSelectedDate} />
                     {budget && (
                         <div className="mt-4">
-                            <p>Tulot: {budget.income}</p>
-                            <p>Menot: {budget.expense}</p>
-                            <p>Budjetti: {budget.nettobudjetti}</p>
-                            <div className="border-b-2 mt-3 rounded-2xl"></div>
-                            <button
-                                type="button"
-                                onClick={onClickNewTransaction}
-                                className="relative rounded-2xl bg-primary p-2 my-4"
-                            >
-                                <Image
-                                    src="/mobile-nav/plus-white.svg"
-                                    alt="create new transaction"
-                                    width={28}
-                                    height={28}
-                                />
-                            </button>
+                            
+                            <div>
+                                <p>Tulot: {budget.income}</p>
+                                <p>Menot: {budget.expense}</p>
+                                <p>Budjetti: {budget.nettobudjetti}</p>
+                            </div>
+
                         </div>
                     )}
 
@@ -178,28 +161,28 @@ export default function Dashboard() {
                     </thead>
                     <tbody>
                         {
-                        Array.from(new Set(budget?.transactions?.map(t => t.category_name))).map((category) => {
-                            const incomeTotal = budget?.transactions
-                                ?.filter(t => t.category_name === category && t.type === 'income')
-                                .reduce((sum, t) => sum + Number(t.amount), 0) || 0;
+                            Array.from(new Set(budget?.transactions?.map(t => t.category_name))).map((category) => {
+                                const incomeTotal = budget?.transactions
+                                    ?.filter(t => t.category_name === category && t.type === 'income')
+                                    .reduce((sum, t) => sum + Number(t.amount), 0) || 0;
 
-                            const expenseTotal = budget?.transactions
-                                ?.filter(t => t.category_name === category && t.type === 'expense')
-                                .reduce((sum, t) => sum + Number(t.amount), 0) || 0;
+                                const expenseTotal = budget?.transactions
+                                    ?.filter(t => t.category_name === category && t.type === 'expense')
+                                    .reduce((sum, t) => sum + Number(t.amount), 0) || 0;
 
-                            return (
-                                <tr key={category} className="hover:bg-gray-50">
-                                    <td className="border border-gray-300 p-2">{category}</td>
-                                    <td className="border border-gray-300 p-2">{incomeTotal > 0 ? incomeTotal : '-'}</td>
-                                    <td className="border border-gray-300 p-2">{expenseTotal > 0 ? expenseTotal : '-'}</td>
-                                    <td className="border border-gray-300 p-2">
-                                        <button type="button" className="cursor-pointer flex">
-                                            <Image alt="edit" width={28} height={28} src={`/edit/edit.svg`} />
-                                        </button>
-                                    </td>
-                                </tr>
-                            );
-                        })}
+                                return (
+                                    <tr key={category} className="hover:bg-gray-50">
+                                        <td className="border border-gray-300 p-2">{category}</td>
+                                        <td className="border border-gray-300 p-2">{incomeTotal > 0 ? incomeTotal : '-'}</td>
+                                        <td className="border border-gray-300 p-2">{expenseTotal > 0 ? expenseTotal : '-'}</td>
+                                        <td className="border border-gray-300 p-2">
+                                            <button type="button" className="cursor-pointer mx-auto flex">
+                                                <Image alt="edit" width={28} height={28} src={`/edit/edit.svg`} />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                     </tbody>
                 </table>
             </div>

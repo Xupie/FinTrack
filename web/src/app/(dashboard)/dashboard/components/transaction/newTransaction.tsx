@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react";
 import Button from "../../../../components/buttons/button";
 
@@ -22,7 +24,7 @@ export default function NewTransaction({ categories, createTransaction, cancel }
     const [newCatType, setNewCatType] = useState<"income" | "expense">("expense");
 
     const filteredCategories = type
-        ? categories.filter(cat => cat.type === type)
+        ? localCategories.filter(cat => cat.type === type)
         : [];
 
     const handleCreateCategory = async () => {
@@ -42,6 +44,9 @@ export default function NewTransaction({ categories, createTransaction, cancel }
             }),
             credentials: 'include'
         });
+
+        // TODO: get the new category id from request instead of temp
+        const data = await response.json();
 
         if (response.ok) {
             setLocalCategories(prev => [...prev, newCategory]);
