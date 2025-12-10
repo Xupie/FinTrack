@@ -2,11 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import PieChart from "../../components/chart/pie";
-import NewTransaction from "../../components/transaction/newTransaction";
+import PieChart from "./components/chart/pie";
+import NewTransaction from "./components/transaction/newTransaction";
 import Image from "next/image";
-import Calendar from "../../components/calendar";
-import Carousel from "../../components/carousel";
+import Calendar from "./components/calendar";
+import Carousel from "./components/carousel";
+import Mobile_nav from "./components/mobile_nav";
 
 type budgetType = {
     income: number;
@@ -126,8 +127,10 @@ export default function Dashboard() {
 
     return (
         <main className="max-w-7xl mx-auto">
+            <Mobile_nav onClickNewTransaction={onClickNewTransaction}/>
             {newTransactionVisible && (
                 <NewTransaction categories={categories} createTransaction={createTransaction} cancel={onClickNewTransaction} />
+                
             )}
             <div className="sm:grid sm:grid-cols-2 m-4 sm:m-8">
                 <div className="sm:max-w-2/3 p-6 mx-auto">
@@ -164,45 +167,41 @@ export default function Dashboard() {
             </div>
 
             <div className="m-4 sm:m-8">
+                <table className="w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr className="bg-gray-100">
+                            <th className="border bg-primary border-gray-300 p-2 text-left">Category</th>
+                            <th className="border bg-primary border-gray-300 p-2 text-left">Income</th>
+                            <th className="border bg-primary border-gray-300 p-2 text-left">Expense</th>
+                            <th className="border bg-primary"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                        Array.from(new Set(budget?.transactions?.map(t => t.category_name))).map((category) => {
+                            const incomeTotal = budget?.transactions
+                                ?.filter(t => t.category_name === category && t.type === 'income')
+                                .reduce((sum, t) => sum + Number(t.amount), 0) || 0;
 
-                {budget?.transactions?.map((transaction, index) => (
-                    <p key={transaction.id}>{transaction.amount}</p>
-                ))}
-            </div>
+                            const expenseTotal = budget?.transactions
+                                ?.filter(t => t.category_name === category && t.type === 'expense')
+                                .reduce((sum, t) => sum + Number(t.amount), 0) || 0;
 
-
-            {/* mobile nav */}
-            <div className="sm:collapse fixed bottom-0 left-0 right-0 z-50">
-                <div className="mx-auto bg-surface px-6 flex justify-around items-center">
-                    <button
-                        className=""
-                        type="button"
-                        onClick={() => router.push("/dashboard")}
-                    >
-                        <Image
-                            src={`/mobile-nav/home.svg`}
-                            alt="home"
-                            width={28}
-                            height={28}
-                        />
-                    </button>
-                    <button
-                        type="button"
-                        onClick={onClickNewTransaction}
-                        className="relative rounded-2xl bg-primary p-2 my-4"
-                    >
-                        <Image
-                            src="/mobile-nav/plus-white.svg"
-                            alt="create new transaction"
-                            width={28}
-                            height={28}
-                        />
-                    </button>
-
-                    <button type="button">
-                        <Image src="/mobile-nav/settings.svg" alt="settings" width={28} height={28} />
-                    </button>
-                </div>
+                            return (
+                                <tr key={category} className="hover:bg-gray-50">
+                                    <td className="border border-gray-300 p-2">{category}</td>
+                                    <td className="border border-gray-300 p-2">{incomeTotal > 0 ? incomeTotal : '-'}</td>
+                                    <td className="border border-gray-300 p-2">{expenseTotal > 0 ? expenseTotal : '-'}</td>
+                                    <td className="border border-gray-300 p-2">
+                                        <button type="button" className="cursor-pointer flex">
+                                            <Image alt="edit" width={28} height={28} src={`/edit/edit.svg`} />
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
             </div>
         </main>
     )
