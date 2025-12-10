@@ -19,49 +19,43 @@ type BudgetData = {
     transactions: Transaction[];
 };
 
-export default function PieChart({ data }: { data: BudgetData }) {
+export default function PieChart({ data, chartType }: { data: BudgetData, chartType: string }) {
 
     // group by category
-    const incomeByCategory: Record<string, number> = {};
     const expenseByCategory: Record<string, number> = {};
+
+    // only get wanted type
     data.transactions.forEach(tx => {
+        if (tx.type !== chartType) return;
+
         const category = tx.category_name;
         const amount = parseFloat(tx.amount as string);
 
-        if (tx.type === "income") {
-            incomeByCategory[category] = (incomeByCategory[category] || 0) + amount;
-        } else if (tx.type === "expense") {
-            expenseByCategory[category] = (expenseByCategory[category] || 0) + amount;
-        }
+        expenseByCategory[category] = (expenseByCategory[category] || 0) + amount;
     });
 
-    const allCategories = Array.from(new Set([
-        ...Object.keys(incomeByCategory),
-        ...Object.keys(expenseByCategory)
-    ]));
-
-    const incomeData = allCategories.map(cat => incomeByCategory[cat] || 0);
-    const expenseData = allCategories.map(cat => expenseByCategory[cat] || 0);
+    const categories = Object.keys(expenseByCategory);
+    const expenseData = Object.values(expenseByCategory);
 
     const chartData = {
-        labels: allCategories,
+        labels: categories,
         datasets: [
             {
-                label: "Income",
-                data: incomeData,
-                backgroundColor: "rgba(54, 162, 235, 0.6)",
-                borderColor: "rgba(54, 162, 235, 1)",
-                borderWidth: 1,
-            },
-            {
-                label: "Expense",
+                label: `${chartType} by Category`,
                 data: expenseData,
-                backgroundColor: "rgba(255, 99, 132, 0.6)",
-                borderColor: "rgba(255, 99, 132, 1)",
+                backgroundColor: categories.map(() =>
+                    `hsl(${Math.random() * 360}, 70%, 60%)`
+                ), // random pleasant colors
                 borderWidth: 1,
             }
         ]
     };
 
-    return <Pie data={chartData} />;
+    return (
+        <div>
+            <h1 className='text-center text-lg'>{chartType.toUpperCase()}</h1>
+            <Pie data={chartData} />
+        </div>
+
+    );
 }

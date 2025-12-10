@@ -19,12 +19,11 @@
 
 
 .btn-cancel {
-    color: var(--color-cancel-text);
+    color: white;
     background-color: var(--color-cancel);
     font-weight: bolder;
 }
 .btn-cancel:hover {
-    color: var(--color-foreground);
     background-color: var(--color-cancel-hover);
 }
 

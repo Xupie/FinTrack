@@ -2,10 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import PieChart from "../components/chart/pie";
-import NewTransaction from "../components/transaction/newTransaction";
+import PieChart from "../../components/chart/pie";
+import NewTransaction from "../../components/transaction/newTransaction";
 import Image from "next/image";
-import Calendar from "../components/calendar";
+import Calendar from "../../components/calendar";
+import Carousel from "../../components/carousel";
 
 type budgetType = {
     income: number;
@@ -41,25 +42,7 @@ export default function Dashboard() {
     useEffect(() => {
         async function getDashboardData() {
             const date = new Date();
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/main.php?action=summary`, {
-                method: "POST",
-                credentials: 'include',
-                body: JSON.stringify({
-                    year: date.getFullYear(),
-                    month: date.getMonth() + 1,
-                    include_transactions: true,
-                }),
-            });
-
-            if (response.status === 401) {
-                router.push("/login");
-            }
-
-            if (!response.ok) {
-                console.error("Failed to fetch dashboard data");
-            }
-
-            const data = await response.json();
+            const data = await getDataOfMonth(date.getMonth() + 1, date.getFullYear())
             setBudget(data);
         };
 
@@ -78,16 +61,37 @@ export default function Dashboard() {
             }
 
             const data = await response.json();
-            console.log(data)
             setCategories(data);
         };
-        
+
         getCategories();
         getDashboardData();
     }, []);
 
-    async function createTransaction() {
+    // Returns data of month
+    async function getDataOfMonth(month: number, year: number) {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/main.php?action=summary`, {
+            method: "POST",
+            credentials: 'include',
+            body: JSON.stringify({
+                year,
+                month,
+                include_transactions: true,
+            }),
+        });
 
+        if (response.status === 401) {
+            router.push("/login");
+        }
+
+        if (!response.ok) {
+            console.error("Failed to fetch data");
+        }
+
+        return await response.json();
+    }
+
+    async function createTransaction() {
         const amount = (document.querySelector("input[name=amount]") as HTMLInputElement).value;
         const type = (document.querySelector("input[name=type]:checked") as HTMLInputElement).id;
         const category = (document.querySelector("select[name=category]") as HTMLSelectElement).value;
@@ -104,9 +108,9 @@ export default function Dashboard() {
             }),
         });
 
-        const data = await response.json();
-        console.log(data)
-
+        if (response.ok) {
+            setNewTransactionVisible(false)
+        }
     }
 
     if (!budget) return <p>loading...</p>
@@ -118,15 +122,20 @@ export default function Dashboard() {
             )}
             <div className="sm:grid sm:grid-cols-2 m-4 sm:m-8">
                 <div className="sm:max-w-2/3 p-6 mx-auto">
-                    <PieChart data={{ ...budget }} />
+                    <Carousel>
+                        <PieChart chartType="expense" data={{ ...budget }} />
+                        <PieChart chartType="income" data={{ ...budget }} />
+                    </Carousel>
+
                 </div>
                 <div className="bg-surface rounded-lg p-4">
                     <Calendar />
                     {budget && (
-                        <div>
+                        <div className="mt-4">
                             <p>Tulot: {budget.income}</p>
                             <p>Menot: {budget.expense}</p>
                             <p>Budjetti: {budget.nettobudjetti}</p>
+                            <div className="border-b-2 mt-3 rounded-2xl"></div>
                             <button
                                 type="button"
                                 onClick={onClickNewTransaction}
@@ -140,13 +149,18 @@ export default function Dashboard() {
                                 />
                             </button>
                         </div>
-
-
                     )}
+
                 </div>
             </div>
 
             <div className="m-4 sm:m-8">
+                <table>
+                    <td>
+                        <th></th>
+                    </td>
+                    
+                </table>
                 {budget?.transactions?.map((transaction, index) => (
                     <p key={transaction.id}>{transaction.amount}</p>
                 ))}

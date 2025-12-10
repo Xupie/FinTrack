@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 export default function Calendar() {
     const [date, setDate] = useState(new Date());
 
@@ -28,7 +27,7 @@ export default function Calendar() {
                 {/* visible formatted month */}
                 <span style={{ margin: "0 10px" }}>{formatMonth(date)}</span>
 
-                {/* hidden or small month input used for editing */}
+                {/* input */}
                 <input
                     type="month"
 

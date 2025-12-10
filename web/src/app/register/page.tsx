@@ -65,7 +65,7 @@ export default function Register() {
             {error
                 ?
                 <div className="bg-error-bg text-error-text py-2 px-2 rounded">
-                    <p>Virhe sähköpostissa tai salasanassa!</p>
+                    <p>Wrong username or password!</p>
                 </div>
                 : ""
             }
