@@ -1,7 +1,10 @@
-import { useState } from "react";
-
-export default function Calendar() {
-    const [date, setDate] = useState(new Date());
+export default function Calendar({
+    date,
+    onChangeDate
+}: {
+    date: Date;
+    onChangeDate: (d: Date) => void;
+}) {
 
     const formatMonth = (d: Date) =>
         d.toLocaleString("en-US", { month: "long" });
@@ -9,14 +12,15 @@ export default function Calendar() {
     const changeMonth = (offset: number) => {
         const newDate = new Date(date);
         newDate.setMonth(date.getMonth() + offset);
-        setDate(newDate);
+        onChangeDate(newDate);
     };
 
     const handleInput = (e: any) => {
         const value = e.target.value; // "2025-07"
         if (!value) return;
+
         const [year, month] = value.split("-");
-        setDate(new Date(year, month - 1, 1));
+        onChangeDate(new Date(year, month - 1, 1));
     };
 
     return (

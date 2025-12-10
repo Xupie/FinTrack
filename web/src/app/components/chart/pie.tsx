@@ -25,7 +25,7 @@ export default function PieChart({ data, chartType }: { data: BudgetData, chartT
     const expenseByCategory: Record<string, number> = {};
 
     // only get wanted type
-    data.transactions.forEach(tx => {
+    data?.transactions?.forEach(tx => {
         if (tx.type !== chartType) return;
 
         const category = tx.category_name;
@@ -54,7 +54,12 @@ export default function PieChart({ data, chartType }: { data: BudgetData, chartT
     return (
         <div>
             <h1 className='text-center text-lg'>{chartType.toUpperCase()}</h1>
-            <Pie data={chartData} />
+            {
+            /* TODO: check for category type */
+            data?.transactions?.[0]
+            ? <Pie data={chartData} /> 
+            : <p className='text-center'>No Data found</p>}
+            
         </div>
 
     );

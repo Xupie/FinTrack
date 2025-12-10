@@ -34,18 +34,13 @@ export default function Dashboard() {
     const [newTransactionVisible, setNewTransactionVisible] = useState(false);
     const [budget, setBudget] = useState<budgetType | null>(null);
     const [categories, setCategories] = useState<categoryType>([]);
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
     const onClickNewTransaction = () => {
         setNewTransactionVisible(!newTransactionVisible);
     }
 
     useEffect(() => {
-        async function getDashboardData() {
-            const date = new Date();
-            const data = await getDataOfMonth(date.getMonth() + 1, date.getFullYear())
-            setBudget(data);
-        };
-
         async function getCategories() {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/main.php?action=show_categories`, {
                 method: "GET",
@@ -65,17 +60,31 @@ export default function Dashboard() {
         };
 
         getCategories();
-        getDashboardData();
     }, []);
+
+    // Get new data when changing date
+    useEffect(() => {
+        async function getDashboardData() {
+            const data = await getDataOfMonth(
+                selectedDate.getMonth() + 1,
+                selectedDate.getFullYear()
+            );
+            setBudget(data);
+        }
+
+        getDashboardData();
+    }, [selectedDate]);
 
     // Returns data of month
     async function getDataOfMonth(month: number, year: number) {
+        // Fix month that isnt 2 digit
+        const monthStr = month.toString().padStart(2, "0");
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/main.php?action=summary`, {
             method: "POST",
             credentials: 'include',
             body: JSON.stringify({
-                year,
-                month,
+                year: year,
+                month: monthStr,
                 include_transactions: true,
             }),
         });
@@ -85,7 +94,7 @@ export default function Dashboard() {
         }
 
         if (!response.ok) {
-            console.error("Failed to fetch data");
+            console.log("Failed to fetch data");
         }
 
         return await response.json();
@@ -129,7 +138,7 @@ export default function Dashboard() {
 
                 </div>
                 <div className="bg-surface rounded-lg p-4">
-                    <Calendar />
+                    <Calendar date={selectedDate} onChangeDate={setSelectedDate} />
                     {budget && (
                         <div className="mt-4">
                             <p>Tulot: {budget.income}</p>
@@ -155,12 +164,7 @@ export default function Dashboard() {
             </div>
 
             <div className="m-4 sm:m-8">
-                <table>
-                    <td>
-                        <th></th>
-                    </td>
-                    
-                </table>
+
                 {budget?.transactions?.map((transaction, index) => (
                     <p key={transaction.id}>{transaction.amount}</p>
                 ))}
