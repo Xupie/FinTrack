@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../../components/buttons/button";
 
 type Category = {
@@ -13,7 +13,8 @@ type NewTransactionProps = {
     categories: Category[];
     createTransaction: () => void;
     cancel: () => void;
-}
+};
+
 
 export default function NewTransaction({ categories, createTransaction, cancel }: NewTransactionProps) {
     const [type, setType] = useState<"income" | "expense" | "">("");
@@ -22,6 +23,10 @@ export default function NewTransaction({ categories, createTransaction, cancel }
     const [showNewCategory, setShowNewCategory] = useState(false);
     const [newCatName, setNewCatName] = useState("");
     const [newCatType, setNewCatType] = useState<"income" | "expense">("expense");
+
+    useEffect(() => {
+        setLocalCategories(categories);
+    }, [categories]);
 
     const filteredCategories = type
         ? localCategories.filter(cat => cat.type === type)
@@ -65,7 +70,7 @@ export default function NewTransaction({ categories, createTransaction, cancel }
             {/* Modal container */}
             <div className="bg-surface rounded-lg shadow-xl w-full max-w-3xl p-6 relative">
                 <div className="flex flex-col mx-auto sm:w-3/5 gap-4">
-                
+
                     {/* Amount */}
                     <div>
                         <label htmlFor="amount" className="flex mb-1 font-medium text-foreground">
@@ -127,7 +132,6 @@ export default function NewTransaction({ categories, createTransaction, cancel }
                 </div>
 
                 {/* Buttons */}
-
                 <div className="flex justify-around mt-4">
                     <Button
                         size="xl"
@@ -141,7 +145,6 @@ export default function NewTransaction({ categories, createTransaction, cancel }
                         type="primary"
                         onClick={createTransaction}
                     />
-
                 </div>
             </div>
 
@@ -183,7 +186,7 @@ export default function NewTransaction({ categories, createTransaction, cancel }
                             </label>
                         </div>
 
-                        <div className="flex justify-end gap-3">
+                        <div className="flex justify-between mt-4">
                             <Button
                                 size="md"
                                 text="Cancel"

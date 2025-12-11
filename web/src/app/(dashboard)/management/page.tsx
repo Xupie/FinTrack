@@ -21,8 +21,6 @@ export default async function Management() {
         categories = await categoriesRes.json();
     }
 
-    console.log(categoriesRes.status)
-
     // Fetch current month summary on the server
     const now = new Date();
     const monthStr = String(now.getMonth() + 1).padStart(2, "0");
