@@ -57,11 +57,11 @@ export default function PieChart({ data, chartType }: { data: BudgetData, chartT
         <div>
             <h1 className='text-center text-lg'>{chartType.toUpperCase()}</h1>
             {
-            /* TODO: check for category type */
-            data?.transactions?.[0]
-            ? <Pie data={chartData} /> 
-            : <p className='text-center'>No Data found</p>}
-            
+                /* TODO: check for category type */
+                data?.transactions?.[0]
+                    ? <Pie data={chartData} />
+                    : <p className='text-center'>No Data found</p>
+            }
         </div>
 
     );

@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Mobile_nav, { NavigationDesktop } from "../components/navigation";
-import NewTransaction from "../components/transaction/newTransaction";
 import Carousel from "../components/carousel";
 import PieChart from "../components/chart/pie";
 import Calendar from "../components/calendar";
@@ -105,7 +104,6 @@ export default function DashboardClient({
                             <PieChart chartType="expense" data={{ ...budget }} />
                             <PieChart chartType="income" data={{ ...budget }} />
                         </Carousel>
-
                     </div>
                     <div className="bg-surface rounded-lg p-4">
                         <Calendar date={selectedDate} onChangeDate={setSelectedDate} />

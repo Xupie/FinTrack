@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Button from "../../../components/buttons/button";
+import ErrorBox from "../ui/error";
 
 type Category = {
     category_name: string;
@@ -23,6 +24,11 @@ export default function NewTransaction({ categories, createTransaction, cancel }
     const [showNewCategory, setShowNewCategory] = useState(false);
     const [newCatName, setNewCatName] = useState("");
     const [newCatType, setNewCatType] = useState<"income" | "expense">("expense");
+
+    const [error, setError] = useState("");
+    const [amount, setAmount] = useState("");
+    const [category, setCategory] = useState("none");
+    const [description, setDescription] = useState("");
 
     useEffect(() => {
         setLocalCategories(categories);
@@ -64,11 +70,35 @@ export default function NewTransaction({ categories, createTransaction, cancel }
         }
     };
 
+    function onCreateTransaction() {
+        if (!amount.trim()) {
+            return setError("Invalid amount");
+        }
+        if (isNaN(Number(amount))) {
+            return setError("Invalid amount");
+        }
+        if (!type) {
+            return setError("Invalid type");
+        }
+        if (category === "none") {
+            return setError("Invalid category");
+        }
+        if (!description.trim()) {
+            return setError("Invalid description");
+        }
+
+        setError("");
+        createTransaction();
+    }
+
     return (
         // Full-screen overlay
         <div className="mx-2 fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
             {/* Modal container */}
             <div className="bg-surface rounded-lg shadow-xl w-full max-w-3xl p-6 relative">
+
+                <ErrorBox onClose={() => setError('')} text={error} />
+
                 <div className="flex flex-col mx-auto sm:w-3/5 gap-4">
 
                     {/* Amount */}
@@ -82,6 +112,8 @@ export default function NewTransaction({ categories, createTransaction, cancel }
                             name="amount"
                             placeholder="123.45€"
                             className="border text-background bg-foreground border-gray-300 rounded-lg px-3 py-2"
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
                         />
                     </div>
 
@@ -89,12 +121,22 @@ export default function NewTransaction({ categories, createTransaction, cancel }
                     {/* Transaction type */}
                     <div className="flex text-foreground">
                         <label htmlFor="expense">
-                            <input type="radio" name="type" id="expense" onChange={() => setType("expense")} />
+                            <input 
+                                type="radio" 
+                                name="type" 
+                                id="expense" 
+                                onChange={() => setType("expense")} 
+                            />
                             Expense
                         </label>
 
                         <label htmlFor="income">
-                            <input type="radio" name="type" id="income" onChange={() => setType("income")} />
+                            <input
+                                type="radio" 
+                                name="type" 
+                                id="income" 
+                                onChange={() => setType("income")} 
+                            />
                             Income
                         </label>
 
@@ -102,11 +144,14 @@ export default function NewTransaction({ categories, createTransaction, cancel }
 
                     {/* Category */}
                     <div className="flex">
-                        <select name="category" id="category">
+                        <select onChange={(e) => setCategory(e.target.id)} name="category" id="category">
                             <option value="none">No category</option>
-
                             {filteredCategories.map(category => (
-                                <option key={category.id} value={category.id}>
+                                <option 
+                                    
+                                    key={category.id} 
+                                    value={category.id}
+                                >
                                     {category.category_name}
                                 </option>
                             ))}
@@ -127,6 +172,8 @@ export default function NewTransaction({ categories, createTransaction, cancel }
                             name="description"
                             placeholder="Groceries..."
                             className="border text-background bg-foreground border-gray-300 rounded-lg px-3 py-2"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                         />
                     </div>
                 </div>
@@ -143,7 +190,7 @@ export default function NewTransaction({ categories, createTransaction, cancel }
                         size="xl"
                         text="Create"
                         type="primary"
-                        onClick={createTransaction}
+                        onClick={onCreateTransaction}
                     />
                 </div>
             </div>

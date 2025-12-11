@@ -1,9 +1,16 @@
+import Header from "./components/header";
+
 export default function Home() {
   return (
-    <main>
-      <h1 className="text-4xl">FinTrack</h1>
+    <>
+      <Header />
+      <main className="max-w-7xl mx-auto">
 
-      
-    </main>
+        <h1 className="text-4xl">FinTrack</h1>
+
+
+      </main>
+    </>
+
   );
 }

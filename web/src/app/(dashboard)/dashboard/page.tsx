@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import DashboardClient from "./DashboardClient";
+import DashboardClient from "./dashboardClient";
 
 export default async function Dashboard() {
     const url = process.env.NEXT_PUBLIC_API_URL;

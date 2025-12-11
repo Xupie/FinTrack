@@ -84,6 +84,7 @@ export function HamburgerMenu() {
             height={36}
             className={"hover"}
             unoptimized={true}
+            loading='eager'
         />
     );
 }
