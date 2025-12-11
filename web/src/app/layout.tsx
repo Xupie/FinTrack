@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Quicksand } from "next/font/google";
 import "./globals.css";
-import Header from "./components/header";
 import { Providers } from "./providers";
 
 const geistMono = Geist_Mono({
@@ -30,7 +29,6 @@ export default function RootLayout({
         className={`${quicksand.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <Header />
           {children}
         </Providers>
       </body>
