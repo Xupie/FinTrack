@@ -2,15 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Button from "../components/buttons/button";
-import InputWithIcon from "../components/input";
+import Button from "../../components/buttons/button";
+import InputWithIcon from "../../components/input";
 
-export default function Register() {
+export default function Login() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
-    async function sendRegister() {
+    async function sendLogin() {
         setLoading(true);
 
         const username = (document.querySelector("input[name=username]") as HTMLInputElement).value;
@@ -23,7 +23,7 @@ export default function Register() {
         }
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register.php`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login.php`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name: username, password: password }),
@@ -61,7 +61,7 @@ export default function Register() {
                 <InputWithIcon name="password" placeholder="password" icon="/password/password.svg" required />
             </div>
 
-            <Button onClick={sendRegister} disabled={loading} size="lg" text="Register" type="primary" />
+            <Button onClick={sendLogin} disabled={loading} size="lg" text="Log In" type="primary" />
             {error
                 ?
                 <div className="bg-error-bg text-error-text py-2 px-2 rounded">
