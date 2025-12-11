@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // =================================================
 function response($data) // function to make code shorter and easier so you dont need to write this 10 times
 {
-    echo json_encode($data); 
+    echo json_encode($data);
     exit;
 }
 
@@ -28,7 +28,7 @@ function error($msg) // function to make code shorter and easier so you dont nee
 }
 
 if (!$conn) { // if connection problem comes then notification
-    error("Database connection error"); 
+    error("Database connection error");
 }
 
 $data = json_decode(file_get_contents("php://input"), true) ?? []; // gets json and turns it into an array and, if there is no data, substitutes an empty array
@@ -95,12 +95,17 @@ if ($action === 'add_category') {
     $stmt = $conn->prepare("INSERT INTO category (category_name, user_id, type) VALUES (?, ?, ?)"); // making sql request to get information from database
 
     // executing our request if something wrong => error
-    if (!$stmt->execute([$category_name, $user_id, $type])) { 
+    if (!$stmt->execute([$category_name, $user_id, $type])) {
         http_response_code(400);
         error("DB Error");
     }
 
-    response(["status" => "ok"]); // output
+    $newId = $conn->insert_id;
+
+    response([
+        "status" => "ok",
+        "category_id" => $newId
+    ]); // output
 }
 
 // =================================================
@@ -482,7 +487,7 @@ if ($action === 'sorted_by_month') {
 
     $rows = []; // making array for output
     while ($row = $res->fetch_assoc()) { // saving information from database
-        $rows[] = $row; 
+        $rows[] = $row;
     }
 
     response($rows); // output
@@ -581,7 +586,7 @@ if ($action === 'summary') {
         http_response_code(400);
         error("Invalid category ID");
     }
-    
+
     $params = [$user_id]; // making array with user id
     $date_conditions = " AND YEAR(t.created_at) = ? "; // condition with year (required) 
     $params[] = $year; // adding to array
@@ -666,4 +671,3 @@ if ($action === 'summary') {
     response($response); // output
 }
 response(["status" => "error", "message" => "Unknown action"]); // if action does not exist
-?>
