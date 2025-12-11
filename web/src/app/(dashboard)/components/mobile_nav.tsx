@@ -7,7 +7,7 @@ type Mobile_navProps = {
     onClickNewTransaction: () => void;
 }
 
-export default function Mobile_nav({onClickNewTransaction}: Mobile_navProps) {
+export default function Mobile_nav({ onClickNewTransaction }: Mobile_navProps) {
     const router = useRouter();
     return (
         <div className="sm:collapse fixed bottom-0 left-0 right-0 z-50">
@@ -18,10 +18,10 @@ export default function Mobile_nav({onClickNewTransaction}: Mobile_navProps) {
                     onClick={() => router.push("/dashboard")}
                 >
                     <Image
-                        src={`/mobile-nav/home.svg`}
-                        alt="home"
-                        width={28}
-                        height={28}
+                        src={`/mobile-nav/graph.svg`}
+                        alt="list"
+                        width={36}
+                        height={36}
                     />
                 </button>
                 <button
@@ -36,9 +36,8 @@ export default function Mobile_nav({onClickNewTransaction}: Mobile_navProps) {
                         height={28}
                     />
                 </button>
-
                 <button type="button">
-                    <Image src="/mobile-nav/settings.svg" alt="settings" width={28} height={28} />
+                    <Image src="/mobile-nav/settings.svg" alt="settings" width={36} height={36} />
                 </button>
             </div>
         </div>
