@@ -15,7 +15,7 @@ export default function Mobile_nav({ onClickNewTransaction }: Mobile_navProps) {
                 <button
                     className=""
                     type="button"
-                    onClick={() => router.push("/dashboard")}
+                    onClick={() => router.push("/management")}
                 >
                     <Image
                         src={`/mobile-nav/graph.svg`}

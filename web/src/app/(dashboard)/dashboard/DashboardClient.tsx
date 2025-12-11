@@ -1,12 +1,12 @@
 "use client"
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Mobile_nav from "../components/mobile_nav";
-import NewTransaction from "./components/transaction/newTransaction";
-import Carousel from "./components/carousel";
-import PieChart from "./components/chart/pie";
-import Calendar from "./components/calendar";
+import NewTransaction from "../components/transaction/newTransaction";
+import Carousel from "../components/carousel";
+import PieChart from "../components/chart/pie";
+import Calendar from "../components/calendar";
 import Image from "next/image";
 
 type budgetType = {
@@ -31,17 +31,20 @@ type categoryType = {
 
 export default function DashboardClient({
     initialBudget,
-    initialCategories
+    initialCategories,
+    initialDate,
 }: {
     initialBudget: budgetType | null;
-    initialCategories: categoryType
+    initialCategories: categoryType;
+    initialDate: Date;
 }) {
 
     const router = useRouter();
     const [newTransactionVisible, setNewTransactionVisible] = useState(false);
     const [budget, setBudget] = useState<budgetType | null>(initialBudget);
     const [categories, setCategories] = useState<categoryType>(initialCategories);
-    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState<Date>(initialDate);
+    const firstRender = useRef(true);
 
     const onClickNewTransaction = () => {
         setNewTransactionVisible(!newTransactionVisible);
@@ -49,7 +52,16 @@ export default function DashboardClient({
 
     // Get new data when changing date
     useEffect(() => {
+        if (firstRender.current) {
+            // Skip the first run
+            firstRender.current = false;
+            return;
+        }
+
+        if (!selectedDate) return;
+
         async function getDashboardData() {
+            if (selectedDate === null) return;
             const data = await getDataOfMonth(
                 selectedDate.getMonth() + 1,
                 selectedDate.getFullYear()
@@ -74,7 +86,7 @@ export default function DashboardClient({
             }),
         });
 
-        if (response.status === 401) router.push("/login"); 
+        if (response.status === 401) router.push("/login");
 
         if (!response.ok) {
             console.log("Failed to fetch data");

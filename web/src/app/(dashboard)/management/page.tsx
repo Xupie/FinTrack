@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
-import DashboardClient from "./DashboardClient";
+import ManagementClient from "./managementClient";
 
-export default async function Dashboard() {
+export default async function Management() {
     const url = process.env.NEXT_PUBLIC_API_URL;
 
     const headers = new Headers();
@@ -21,13 +21,13 @@ export default async function Dashboard() {
         categories = await categoriesRes.json();
     }
 
+    console.log(categoriesRes.status)
+
     // Fetch current month summary on the server
     const now = new Date();
     const monthStr = String(now.getMonth() + 1).padStart(2, "0");
 
-    const budgetRes = await fetch(
-        `${url}/main.php?action=summary`,
-        {
+    const transactionRes = await fetch(`${url}/main.php?action=summary`, {
             method: "POST",
             headers: headers,
             cache: "no-store",
@@ -39,17 +39,15 @@ export default async function Dashboard() {
         }
     );
 
-    let budget = null;
-    if (budgetRes.ok) {
-        budget = await budgetRes.json();
+    let transactions = [];
+    if (transactionRes.ok) {
+        transactions = await transactionRes.json();
     }
 
     return (
-        <DashboardClient 
-            initialBudget={budget} 
+        <ManagementClient
             initialCategories={categories}
-            initialDate={now}
+            initialTransactions={transactions}
         />
-        
     )
 }
