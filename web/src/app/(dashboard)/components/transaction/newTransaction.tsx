@@ -148,7 +148,6 @@ export default function NewTransaction({ categories, createTransaction, cancel }
                             <option value="none">No category</option>
                             {filteredCategories.map(category => (
                                 <option 
-                                    
                                     key={category.id} 
                                     value={category.id}
                                 >

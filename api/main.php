@@ -647,7 +647,7 @@ if ($action === 'summary') {
     if ($include_transactions) { // if exists in request
         //making request
         $query_trans = "
-            SELECT t.id, t.description, t.amount, c.type AS type, t.created_at, c.category_name
+            SELECT t.id, t.description, t.amount, c.type AS type, t.created_at, c.id AS category_id, c.category_name
             FROM transaction t
             JOIN category c ON t.category_id = c.id
             WHERE t.user_id = ?

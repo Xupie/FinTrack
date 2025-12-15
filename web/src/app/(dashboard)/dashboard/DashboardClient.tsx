@@ -8,6 +8,7 @@ import PieChart from "../components/chart/pie";
 import Calendar from "../components/calendar";
 import Image from "next/image";
 import Navigation from "../components/navigation";
+import EditModal from "../components/transaction/edit";
 
 type budgetType = {
     income: number;
@@ -20,6 +21,7 @@ type budgetType = {
         type: string;
         created_at: string;
         category_name: string;
+        category_id: number;
     }[]
 }
 
@@ -43,6 +45,10 @@ export default function DashboardClient({
     const [budget, setBudget] = useState<budgetType | null>(initialBudget);
     const [categories, setCategories] = useState<categoryType>(initialCategories);
     const [selectedDate, setSelectedDate] = useState<Date>(initialDate);
+    const [editMenuVisible, setEditMenuVisible] = useState(false);
+    const [selectedCategoryItem, setSelectedCategoryItem] = useState<
+        (typeof categories)[number] | null
+    >(null);
     const firstRender = useRef(true);
 
     // Get new data when changing date
@@ -88,6 +94,11 @@ export default function DashboardClient({
         }
 
         return await response.json();
+    }
+
+    function openCategoryEdit(category: (typeof categories)[number]) {
+        setSelectedCategoryItem(category);
+        setEditMenuVisible(true);
     }
 
     if (!budget) return <p>loading...</p>
@@ -151,7 +162,7 @@ export default function DashboardClient({
                                         <td className="border border-gray-300 p-2">{expenseTotal > 0 ? expenseTotal : '-'}</td>
                                         <td className="border border-gray-300 p-2">{incomeTotal > 0 ? incomeTotal : '-'}</td>
                                         <td className="border border-gray-300 p-2 hidden sm:table-cell">
-                                            <button type="button" className="cursor-pointer mx-auto flex">
+                                            <button type="button" className="cursor-pointer mx-auto flex" onClick={() => openCategoryEdit(categories.find(c => c.category_name === category) || categories[0])}>
                                                 <Image alt="edit" width={28} height={28} src={`/edit/edit.svg`} />
                                             </button>
                                         </td>
@@ -161,6 +172,14 @@ export default function DashboardClient({
                         </tbody>
                     </table>
                 </div>
+                {editMenuVisible && selectedCategoryItem && (
+                    <EditModal
+                        type="category"
+                        data={selectedCategoryItem}
+                        setCategories={setCategories}
+                        close={() => setEditMenuVisible(false)}
+                    />
+                )}
             </main>
         </>
     )
