@@ -1,0 +1,168 @@
+"use client"
+
+import { useState } from "react";
+import ErrorBox from "../ui/error";
+import Button from "@/app/components/buttons/button";
+
+type Transaction = {
+    id: number;
+    description: string;
+    amount: number;
+    type: string;
+    created_at: string;
+    category_id: number;
+    category_name: string;
+};
+
+type Category = {
+    id: number;
+    category_name: string;
+    type: string;
+};
+
+type EditTransactionProps = {
+    data: Transaction;
+    categories: Category[];
+    setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
+    close: () => void;
+}
+
+export default function EditTransaction(props: EditTransactionProps) {
+    const [error, setError] = useState("");
+    const [localTransaction, setLocalTransaction] = useState<Transaction>(props.data);
+
+    async function editTransaction() {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/main.php?action=update_transaction`, {
+            method: "POST",
+            credentials: "include",
+            body: JSON.stringify({
+                id: localTransaction.id,
+                description: localTransaction.description,
+                category: localTransaction.category_id,
+                amount: localTransaction.amount,
+            }),
+        });
+
+        if (response.ok) {
+            props.setTransactions((prev) =>
+                prev.map((transaction) =>
+                    transaction.id === localTransaction.id
+                        ? localTransaction
+                        : transaction
+                )
+            );
+            props.close();
+        }
+    }
+
+    function handleTransactionUpdate() {
+        if (!localTransaction?.category_id) {
+            return setError("No category id");
+        }
+        if (!localTransaction?.type) {
+            return setError("No category type");
+        }
+        if (!localTransaction?.description.trim()) {
+            return setError("No category description");
+        }
+        if (isNaN(Number(localTransaction?.amount))) {
+            return setError("Invalid amount");
+        }
+
+        setError("");
+        editTransaction();
+    }
+
+    return (
+        // Full-screen overlay
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            {/* Modal container */}
+            <div className="bg-surface rounded-lg shadow-xl w-full max-w-3xl p-6 relative">
+                <ErrorBox onClose={() => setError('')} text={error} />
+
+                {/* Amount */}
+                <label htmlFor="transaction_amount" className="flex mb-1 font-medium text-foreground">Amount</label>
+                <input
+                    type="text"
+                    id="transaction_amount"
+                    name="transaction_amount"
+                    placeholder=""
+                    className="border text-background bg-foreground border-gray-300 rounded-lg px-3 py-2"
+                    value={localTransaction.amount}
+                    onChange={(e) => setLocalTransaction({ ...localTransaction, amount: parseFloat(e.target.value) })}
+                />
+
+                {/* Category type */}
+                <div className="flex text-foreground">
+                    <label htmlFor="expense">
+                        <input
+                            type="radio"
+                            name="type"
+                            id="expense"
+                            checked={localTransaction.type === "expense"}
+                            onChange={(e) => setLocalTransaction({ ...localTransaction, type: e.target.id })}
+                        />
+                        Expense
+                    </label>
+
+                    <label htmlFor="income">
+                        <input
+                            type="radio"
+                            name="type"
+                            id="income"
+                            checked={localTransaction.type === "income"}
+                            onChange={(e) => setLocalTransaction({ ...localTransaction, type: e.target.id })}
+                        />
+                        Income
+                    </label>
+                </div>
+
+                {/* Category */}
+                <select
+                    value={localTransaction.category_id}
+                    onChange={(e) =>
+                        setLocalTransaction({
+                            ...localTransaction,
+                            category_id: Number(e.target.value),
+                        })
+                    }
+                >
+                    {props.categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                            {category.category_name}
+                        </option>
+                    ))}
+                </select>
+
+
+                {/* Description */}
+                <label htmlFor="transaction_description" className="flex mb-1 font-medium text-foreground">Description</label>
+                <input
+                    type="text"
+                    id="transaction_description"
+                    name="transaction_description"
+                    placeholder=""
+                    className="border text-background bg-foreground border-gray-300 rounded-lg px-3 py-2"
+                    value={localTransaction.description}
+                    onChange={(e) => setLocalTransaction({ ...localTransaction, description: e.target.value })}
+                />
+
+                {/* Buttons */}
+                <div className="flex justify-around mt-4">
+                    <Button
+                        size="xl"
+                        text="Cancel"
+                        type="cancel"
+                        onClick={props.close}
+                    />
+                    <Button
+                        size="xl"
+                        text="Update"
+                        type="primary"
+                        onClick={handleTransactionUpdate}
+                    />
+                </div>
+            </div>
+        </div>
+    )
+}

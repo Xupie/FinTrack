@@ -8,7 +8,8 @@ import PieChart from "../components/chart/pie";
 import Calendar from "../components/calendar";
 import Image from "next/image";
 import Navigation from "../components/navigation";
-import EditModal from "../components/transaction/edit";
+import EditTransaction from "../components/transaction/editTransaction";
+import EditCategory from "../components/category/editCategory";
 
 type budgetType = {
     income: number;
@@ -119,14 +120,31 @@ export default function DashboardClient({
                     <div className="bg-surface rounded-lg p-4">
                         <Calendar date={selectedDate} onChangeDate={setSelectedDate} />
                         {budget && (
-                            <div className="flex flex-col justify-between h-full pb-4">
-                                <div>
-                                    <p>Income: {budget.income}</p>
-                                    <p>Expenses: {budget.expense}</p>
-                                    <p>Budget: {budget.nettobudjetti}</p>
+                            <div className="flex flex-col mt-4">
+                                <div className="space-y-3">
+                                    <div>
+                                        <p className="text-xs sm:text-sm text-muted">Income</p>
+                                        <p className="text-lg sm:text-2xl font-semibold">
+                                            {budget.income}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-xs sm:text-sm text-muted">Expenses</p>
+                                        <p className="text-lg sm:text-2xl font-semibold">
+                                            {budget.expense}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-xs sm:text-sm text-muted">Budget</p>
+                                        <p className="text-xl sm:text-2xl font-bold">
+                                            {budget.nettobudjetti}
+                                        </p>
+                                    </div>
                                 </div>
 
-                                <div className="collapse sm:visible bottom-0">
+                                <div className="hidden sm:block mt-16">
                                     <NavigationDesktop categories={categories} />
                                 </div>
                             </div>
@@ -157,7 +175,6 @@ export default function DashboardClient({
 
                                 return (
                                     <tr key={category} className="hover:bg-gray-50">
-                                        {/* TODO: max width to show for category */}
                                         <td className="border border-gray-300 p-2 max-w-xs truncate">{category}</td>
                                         <td className="border border-gray-300 p-2">{expenseTotal > 0 ? expenseTotal : '-'}</td>
                                         <td className="border border-gray-300 p-2">{incomeTotal > 0 ? incomeTotal : '-'}</td>
@@ -173,9 +190,8 @@ export default function DashboardClient({
                     </table>
                 </div>
                 {editMenuVisible && selectedCategoryItem && (
-                    <EditModal
-                        type="category"
-                        data={selectedCategoryItem}
+                    <EditCategory
+                        category={selectedCategoryItem}
                         setCategories={setCategories}
                         close={() => setEditMenuVisible(false)}
                     />

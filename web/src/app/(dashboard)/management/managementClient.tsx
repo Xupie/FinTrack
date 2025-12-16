@@ -4,7 +4,9 @@ import Button from "@/app/components/buttons/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import EditModal from "../components/transaction/edit";
+import EditTransaction from "../components/transaction/editTransaction";
+import CreateCategory from "../components/category/createCategory";
+import EditCategory from "../components/category/editCategory";
 
 type categoryType = {
     category_name: string;
@@ -39,6 +41,7 @@ export default function ManagementClient({
     const [categories, setCategories] = useState(initialCategories);
     const [transactions, setTransactions] = useState(initialTransactions.transactions);
     const [editMenuVisible, setEditMenuVisible] = useState(false);
+    const [createCategoryVisible, setCreateCategoryVisible] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("");
     const [editType, setEditType] = useState<"transaction" | "category" | null>(null);
     const [selectedTransaction, setSelectedTransaction] = useState<
@@ -64,22 +67,6 @@ export default function ManagementClient({
         setEditMenuVisible(true);
     }
 
-
-    async function deleteCategory(id: number) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/main.php?action=delete_category`, {
-            method: "POST",
-            credentials: "include",
-            body: JSON.stringify({
-                category_id: id
-            }),
-        });
-
-        if (response.ok) {
-            setCategories(categories.filter(cat => cat.id !== id));
-        }
-    }
-
-
     async function deleteTransaction(id: number) {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/main.php?action=delete_transaction`, {
             method: "POST",
@@ -101,10 +88,14 @@ export default function ManagementClient({
                 <Button size="lg" text="Dashboard" type="primary" onClick={() => router.push("/dashboard")} />
             </div>
 
-            <div className="sm:grid sm:grid-cols-2">
+            <div className="">
                 {/* Categories */}
                 <section className="overflow-x-auto m-4">
-                    <h1>Categories</h1>
+                    <div className="flex justify-between items-center pb-2">
+                        <h1 className="text-2xl">Categories</h1>
+                        <Button size="md" text="Create Category" type="primary" onClick={() => setCreateCategoryVisible(true)} />
+                    </div>
+
                     <table className="w-full table-fixed">
                         <thead>
                             <tr>
@@ -132,17 +123,20 @@ export default function ManagementClient({
 
                 {/* Transactions */}
                 <section className="overflow-x-auto m-4">
-                    <h1>Transactions</h1>
-                    <select
-                        name="transactionType"
-                        id="transactionType"
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                    >
-                        <option value="">All</option>
-                        <option value="income">Incomes</option>
-                        <option value="expense">Expenses</option>
-                    </select>
+                    <div className="flex justify-between">
+                        <h1 className="text-2xl">Transactions</h1>
+                        <select
+                            name="transactionType"
+                            id="transactionType"
+                            value={selectedCategory}
+                            onChange={(e) => setSelectedCategory(e.target.value)}
+                        >
+                            <option value="">All</option>
+                            <option value="income">Incomes</option>
+                            <option value="expense">Expenses</option>
+                        </select>
+                    </div>
+
                     <table className="w-full table-fixed">
                         <thead>
                             <tr>
@@ -173,8 +167,7 @@ export default function ManagementClient({
             </div>
 
             {editMenuVisible && editType === "transaction" && selectedTransaction && (
-                <EditModal
-                    type="transaction"
+                <EditTransaction
                     data={selectedTransaction}
                     setTransactions={setTransactions}
                     categories={categories}
@@ -183,12 +176,15 @@ export default function ManagementClient({
             )}
 
             {editMenuVisible && editType === "category" && selectedCategoryItem && (
-                <EditModal
-                    type="category"
-                    data={selectedCategoryItem}
+                <EditCategory
+                    category={selectedCategoryItem}
                     setCategories={setCategories}
                     close={() => setEditMenuVisible(false)}
                 />
+            )}
+
+            {createCategoryVisible && (
+                <CreateCategory setCategories={setCategories} close={() => setCreateCategoryVisible(false)} />
             )}
 
         </main>

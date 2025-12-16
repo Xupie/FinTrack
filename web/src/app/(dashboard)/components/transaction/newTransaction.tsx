@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Button from "../../../components/buttons/button";
 import ErrorBox from "../ui/error";
+import CreateCategory from "../category/createCategory";
 
 type Category = {
     category_name: string;
@@ -20,10 +21,7 @@ type NewTransactionProps = {
 export default function NewTransaction({ categories, createTransaction, cancel }: NewTransactionProps) {
     const [type, setType] = useState<"income" | "expense" | "">("");
     const [localCategories, setLocalCategories] = useState<Category[]>(categories);
-
     const [showNewCategory, setShowNewCategory] = useState(false);
-    const [newCatName, setNewCatName] = useState("");
-    const [newCatType, setNewCatType] = useState<"income" | "expense">("expense");
 
     const [error, setError] = useState("");
     const [amount, setAmount] = useState("");
@@ -37,38 +35,6 @@ export default function NewTransaction({ categories, createTransaction, cancel }
     const filteredCategories = type
         ? localCategories.filter(cat => cat.type === type)
         : [];
-
-    const handleCreateCategory = async () => {
-        if (!newCatName.trim()) return;
-
-        let newCategory: Category = {
-            id: Date.now(), // temp id
-            category_name: newCatName,
-            type: newCatType,
-        };
-
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/main.php?action=add_category`, {
-            method: "POST",
-            body: JSON.stringify({
-                category_name: newCategory.category_name,
-                type: newCategory.type,
-            }),
-            credentials: 'include'
-        });
-
-        const data = await response.json();
-        // Change temp id to real id
-        newCategory.id = data["category_id"]
-
-        if (response.ok) {
-            setLocalCategories(prev => [...prev, newCategory]);
-            setShowNewCategory(false);
-            setNewCatName("");
-        }
-        else {
-            console.log("error creating category");
-        }
-    };
 
     function onCreateTransaction() {
         if (!amount.trim()) {
@@ -194,62 +160,7 @@ export default function NewTransaction({ categories, createTransaction, cancel }
                 </div>
             </div>
 
-            {showNewCategory && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="bg-surface p-6 rounded-lg w-full max-w-md shadow-lg">
-
-                        <h2 className="text-lg font-semibold mb-4">Create New Category</h2>
-
-                        {/* Category name */}
-                        <input
-                            type="text"
-                            placeholder="Category name"
-                            className="border w-full px-3 py-2 rounded mb-4"
-                            value={newCatName}
-                            onChange={(e) => setNewCatName(e.target.value)}
-                        />
-
-                        {/* Category type */}
-                        <div className="flex gap-4 mb-4">
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="newCatType"
-                                    value="expense"
-                                    checked={newCatType === "expense"}
-                                    onChange={() => setNewCatType("expense")}
-                                /> Expense
-                            </label>
-
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="newCatType"
-                                    value="income"
-                                    checked={newCatType === "income"}
-                                    onChange={() => setNewCatType("income")}
-                                /> Income
-                            </label>
-                        </div>
-
-                        <div className="flex justify-between mt-4">
-                            <Button
-                                size="md"
-                                text="Cancel"
-                                type="cancel"
-                                onClick={() => setShowNewCategory(false)}
-                            />
-                            <Button
-                                size="md"
-                                text="Create"
-                                type="primary"
-                                onClick={handleCreateCategory}
-                            />
-                        </div>
-
-                    </div>
-                </div>
-            )}
+            {showNewCategory && <CreateCategory close={() => setShowNewCategory(false)} setCategories={setLocalCategories}/>}
         </div>
     )
 }

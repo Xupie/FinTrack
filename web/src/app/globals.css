@@ -76,3 +76,18 @@ input {
 tr:hover {
   background-color: var(--color-surface);
 }
+
+select option {
+  background: var(--background);
+  color: var(--foreground);
+  border: none;
+  border-radius: 0;
+}
+
+select option:hover {
+  background: var(--color-surface);
+}
+
+select {
+  border: none;
+}

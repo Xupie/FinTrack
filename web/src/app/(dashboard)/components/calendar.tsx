@@ -26,25 +26,28 @@ export default function Calendar({
     };
 
     return (
-        <div className="flex">
-            <button className="text-3xl font-bold" onClick={() => changeMonth(-1)}>{"<"}</button>
+        <div className="flex flex-col">
+            {/* visible formatted month */}
+            <span className="text-center text-2xl">{formatMonth(date)}</span>
+            
+            <div className="flex">
+                <button className="text-3xl font-bold" onClick={() => changeMonth(-1)}>{"<"}</button>
 
-            <div className="flex grow items-center justify-center">
-                {/* visible formatted month */}
-                <span style={{ margin: "0 10px" }}>{formatMonth(date)}</span>
+                <div className="flex grow items-center justify-center">
+                    {/* input */}
+                    <input
+                        type="month"
+                        className="text-center"
+                        value={`${date.getFullYear()}-${String(
+                            date.getMonth() + 1
+                        ).padStart(2, "0")}`}
+                        onChange={handleInput}
+                    />
+                </div>
 
-                {/* input */}
-                <input
-                    type="month"
-
-                    value={`${date.getFullYear()}-${String(
-                        date.getMonth() + 1
-                    ).padStart(2, "0")}`}
-                    onChange={handleInput}
-                />
+                <button className="text-3xl font-bold" onClick={() => changeMonth(1)}>{">"}</button>
             </div>
 
-            <button className="text-3xl font-bold" onClick={() => changeMonth(1)}>{">"}</button>
         </div>
     )
 }
