@@ -63,6 +63,8 @@ export default function NewTransaction({ categories, createTransaction, cancel }
             {/* Modal container */}
             <div className="bg-surface rounded-lg shadow-xl w-full max-w-3xl p-6 relative">
 
+                <h1 className="text-2xl font-bold mb-4">New Transaction</h1>
+
                 <ErrorBox onClose={() => setError('')} text={error} />
 
                 <div className="flex flex-col mx-auto sm:w-3/5 gap-4">
@@ -87,21 +89,21 @@ export default function NewTransaction({ categories, createTransaction, cancel }
                     {/* Transaction type */}
                     <div className="flex text-foreground">
                         <label htmlFor="expense">
-                            <input 
-                                type="radio" 
-                                name="type" 
-                                id="expense" 
-                                onChange={() => setType("expense")} 
+                            <input
+                                type="radio"
+                                name="type"
+                                id="expense"
+                                onChange={() => setType("expense")}
                             />
                             Expense
                         </label>
 
                         <label htmlFor="income">
                             <input
-                                type="radio" 
-                                name="type" 
-                                id="income" 
-                                onChange={() => setType("income")} 
+                                type="radio"
+                                name="type"
+                                id="income"
+                                onChange={() => setType("income")}
                             />
                             Income
                         </label>
@@ -113,8 +115,8 @@ export default function NewTransaction({ categories, createTransaction, cancel }
                         <select onChange={(e) => setCategory(e.target.id)} name="category" id="category">
                             <option value="none">No category</option>
                             {filteredCategories.map(category => (
-                                <option 
-                                    key={category.id} 
+                                <option
+                                    key={category.id}
                                     value={category.id}
                                 >
                                     {category.category_name}
@@ -146,13 +148,13 @@ export default function NewTransaction({ categories, createTransaction, cancel }
                 {/* Buttons */}
                 <div className="flex justify-around mt-4">
                     <Button
-                        size="xl"
+                        size="lg"
                         text="Cancel"
                         type="cancel"
                         onClick={cancel}
                     />
                     <Button
-                        size="xl"
+                        size="lg"
                         text="Create"
                         type="primary"
                         onClick={onCreateTransaction}
@@ -160,7 +162,7 @@ export default function NewTransaction({ categories, createTransaction, cancel }
                 </div>
             </div>
 
-            {showNewCategory && <CreateCategory close={() => setShowNewCategory(false)} setCategories={setLocalCategories}/>}
+            {showNewCategory && <CreateCategory close={() => setShowNewCategory(false)} setCategories={setLocalCategories} />}
         </div>
     )
 }

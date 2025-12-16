@@ -7,6 +7,7 @@ import { useState } from "react";
 import EditTransaction from "../components/transaction/editTransaction";
 import CreateCategory from "../components/category/createCategory";
 import EditCategory from "../components/category/editCategory";
+import ListCategory from "../components/category/listCategory";
 
 type categoryType = {
     category_name: string;
@@ -41,6 +42,7 @@ export default function ManagementClient({
     const [categories, setCategories] = useState(initialCategories);
     const [transactions, setTransactions] = useState(initialTransactions.transactions);
     const [editMenuVisible, setEditMenuVisible] = useState(false);
+    const [listCategoryVisible, setListCategoryVisible] = useState(false);
     const [createCategoryVisible, setCreateCategoryVisible] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("");
     const [editType, setEditType] = useState<"transaction" | "category" | null>(null);
@@ -65,6 +67,11 @@ export default function ManagementClient({
         setSelectedCategoryItem(category);
         setEditType("category");
         setEditMenuVisible(true);
+    }
+
+    function openListCategory(category: (typeof categories)[number]) {
+        setSelectedCategoryItem(category);
+        setListCategoryVisible(true);
     }
 
     async function deleteTransaction(id: number) {
@@ -112,7 +119,7 @@ export default function ManagementClient({
                                         <td className="border border-gray-300 p-2">{category.type}</td>
                                         <td className="border border-gray-300 p-2 flex justify-around">
                                             <button className="cursor-pointer" onClick={() => openCategoryEdit(category)}><Image alt="edit" width={28} height={28} src={`/edit/edit.svg`} /></button>
-                                            <button className="cursor-pointer"><Image alt="list" width={28} height={28} src={`/hamburger-menu/hamburger-menu-white.svg`} /></button>
+                                            <button className="cursor-pointer" onClick={() => openListCategory(category)}><Image alt="list" width={28} height={28} src={`/hamburger-menu/hamburger-menu-white.svg`} /></button>
                                         </td>
                                     </tr>
                                 );
@@ -123,7 +130,7 @@ export default function ManagementClient({
 
                 {/* Transactions */}
                 <section className="overflow-x-auto m-4">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between mb-2">
                         <h1 className="text-2xl">Transactions</h1>
                         <select
                             name="transactionType"
@@ -140,7 +147,7 @@ export default function ManagementClient({
                     <table className="w-full table-fixed">
                         <thead>
                             <tr>
-                                <th className="border bg-primary border-gray-300 p-2 text-left">Category</th>
+                                <th className="border bg-primary border-gray-300 p-2 text-left hidden sm:table-cell">Category</th>
                                 <th className="hidden sm:table-cell border bg-primary border-gray-300 p-2 text-left">Type</th>
                                 <th className="border bg-primary border-gray-300 p-2 text-left">Description</th>
                                 <th className="border bg-primary border-gray-300 p-2 text-left">Amount</th>
@@ -151,7 +158,7 @@ export default function ManagementClient({
                         <tbody>
                             {filteredTransactions.map((transaction) => (
                                 <tr key={transaction.id} className="hover:bg-gray-50">
-                                    <td className="border border-gray-300 p-2 max-w-xs truncate">{transaction.category_name}</td>
+                                    <td className="border border-gray-300 p-2 max-w-xs truncate hidden sm:table-cell">{transaction.category_name}</td>
                                     <td className="border border-gray-300 p-2 max-w-xs truncate hidden sm:table-cell">{transaction.type}</td>
                                     <td className="border border-gray-300 p-2 max-w-xs truncate">{transaction.description}</td>
                                     <td className="border border-gray-300 p-2 max-w-xs truncate">{transaction.amount}</td>
@@ -185,6 +192,10 @@ export default function ManagementClient({
 
             {createCategoryVisible && (
                 <CreateCategory setCategories={setCategories} close={() => setCreateCategoryVisible(false)} />
+            )}
+
+            {listCategoryVisible && selectedCategoryItem && (
+                <ListCategory category={selectedCategoryItem} close={() => setListCategoryVisible(false)} />
             )}
 
         </main>

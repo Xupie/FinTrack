@@ -2,14 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import Mobile_nav, { NavigationDesktop } from "../components/navigation";
+import { NavigationDesktop } from "../components/navigation";
 import Carousel from "../components/carousel";
 import PieChart from "../components/chart/pie";
 import Calendar from "../components/calendar";
 import Image from "next/image";
 import Navigation from "../components/navigation";
-import EditTransaction from "../components/transaction/editTransaction";
-import EditCategory from "../components/category/editCategory";
+import ListCategory from "../components/category/listCategory";
 
 type budgetType = {
     income: number;
@@ -46,7 +45,7 @@ export default function DashboardClient({
     const [budget, setBudget] = useState<budgetType | null>(initialBudget);
     const [categories, setCategories] = useState<categoryType>(initialCategories);
     const [selectedDate, setSelectedDate] = useState<Date>(initialDate);
-    const [editMenuVisible, setEditMenuVisible] = useState(false);
+    const [listMenuVisible, setListMenuVisible] = useState(false);
     const [selectedCategoryItem, setSelectedCategoryItem] = useState<
         (typeof categories)[number] | null
     >(null);
@@ -97,15 +96,16 @@ export default function DashboardClient({
         return await response.json();
     }
 
-    function openCategoryEdit(category: (typeof categories)[number]) {
+    function openListCategory(category: (typeof categories)[number]) {
         setSelectedCategoryItem(category);
-        setEditMenuVisible(true);
+        setListMenuVisible(true);
     }
 
     if (!budget) return <p>loading...</p>
 
     return (
         <>
+
             <Navigation categories={categories} />
 
             <main className="max-w-7xl mx-auto">
@@ -160,7 +160,7 @@ export default function DashboardClient({
                                 <th className="border bg-primary border-gray-300 p-2 text-left">Category</th>
                                 <th className="border bg-primary border-gray-300 p-2 text-left">Expense</th>
                                 <th className="border bg-primary border-gray-300 p-2 text-left">Income</th>
-                                <th className="border bg-primary hidden sm:table-cell"></th>
+                                <th className="border bg-primary hidden sm:table-cell">List</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -179,8 +179,8 @@ export default function DashboardClient({
                                         <td className="border border-gray-300 p-2">{expenseTotal > 0 ? expenseTotal : '-'}</td>
                                         <td className="border border-gray-300 p-2">{incomeTotal > 0 ? incomeTotal : '-'}</td>
                                         <td className="border border-gray-300 p-2 hidden sm:table-cell">
-                                            <button type="button" className="cursor-pointer mx-auto flex" onClick={() => openCategoryEdit(categories.find(c => c.category_name === category) || categories[0])}>
-                                                <Image alt="edit" width={28} height={28} src={`/edit/edit.svg`} />
+                                            <button type="button" className="cursor-pointer mx-auto flex" onClick={() => openListCategory(categories.find(c => c.category_name === category) || categories[0])}>
+                                                <Image alt="edit" width={28} height={28} src={`/hamburger-menu/hamburger-menu-white.svg`} />
                                             </button>
                                         </td>
                                     </tr>
@@ -189,11 +189,10 @@ export default function DashboardClient({
                         </tbody>
                     </table>
                 </div>
-                {editMenuVisible && selectedCategoryItem && (
-                    <EditCategory
+                {listMenuVisible && selectedCategoryItem && (
+                    <ListCategory
                         category={selectedCategoryItem}
-                        setCategories={setCategories}
-                        close={() => setEditMenuVisible(false)}
+                        close={() => setListMenuVisible(false)}
                     />
                 )}
             </main>

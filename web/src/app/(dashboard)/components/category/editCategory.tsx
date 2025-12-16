@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ErrorBox from "../ui/error";
 import Button from "@/app/components/buttons/button";
+import Image from "next/image";
 
 type Category = {
     id: number;
@@ -14,7 +15,7 @@ type EditCategoryProps = {
     close: () => void;
 }
 
-export default function EditCategory({setCategories, close, category}: EditCategoryProps) {
+export default function EditCategory({ setCategories, close, category }: EditCategoryProps) {
     const [error, setError] = useState("");
     const [localCategory, setLocalCategory] = useState<Category>(category);
 
@@ -51,9 +52,10 @@ export default function EditCategory({setCategories, close, category}: EditCateg
         });
 
         if (response.ok) {
-            setCategories((prev) => 
+            setCategories((prev) =>
                 prev.filter((category) => category.id === localCategory.id)
-        )}
+            )
+        }
     }
 
     function handleCategoryUpdate() {
@@ -74,6 +76,11 @@ export default function EditCategory({setCategories, close, category}: EditCateg
             {/* Modal container */}
             <div className="bg-surface rounded-lg shadow-xl w-full max-w-3xl p-6 relative">
                 <ErrorBox onClose={() => setError('')} text={error} />
+
+                <div className="flex mb-4">
+                    <h1 className="text-2xl font-bold">Edit Category</h1>
+                    <button className="flex ms-auto cursor-pointer"><Image src={`edit-dots.svg`} alt="edit-dots" height={25} width={25} /></button>
+                </div>
 
                 {/* Category Name */}
                 <label htmlFor="category_name" className="flex mb-1 font-medium text-foreground">Category Name</label>
@@ -115,13 +122,13 @@ export default function EditCategory({setCategories, close, category}: EditCateg
                 {/* Buttons */}
                 <div className="flex justify-around mt-4">
                     <Button
-                        size="xl"
+                        size="lg"
                         text="Cancel"
                         type="cancel"
                         onClick={close}
                     />
                     <Button
-                        size="xl"
+                        size="lg"
                         text="Update"
                         type="primary"
                         onClick={handleCategoryUpdate}

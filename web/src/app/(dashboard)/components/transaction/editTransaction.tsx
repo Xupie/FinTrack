@@ -3,6 +3,7 @@
 import { useState } from "react";
 import ErrorBox from "../ui/error";
 import Button from "@/app/components/buttons/button";
+import Image from "next/image";
 
 type Transaction = {
     id: number;
@@ -78,6 +79,12 @@ export default function EditTransaction(props: EditTransactionProps) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
             {/* Modal container */}
             <div className="bg-surface rounded-lg shadow-xl w-full max-w-3xl p-6 relative">
+
+                <div className="flex mb-4">
+                    <h1 className="text-2xl font-bold">Edit Transaction</h1>
+                    <button className="flex ms-auto cursor-pointer"><Image src={`edit-dots.svg`} alt="edit-dots" height={25} width={25} /></button>
+                </div>
+
                 <ErrorBox onClose={() => setError('')} text={error} />
 
                 {/* Amount */}
