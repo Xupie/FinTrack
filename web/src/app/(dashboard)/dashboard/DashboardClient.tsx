@@ -110,7 +110,7 @@ export default function DashboardClient({
 
             <main className="max-w-7xl mx-auto">
 
-                <div className="sm:grid sm:grid-cols-2 m-4 sm:m-8">
+                <div className="sm:grid sm:grid-cols-2 mx-4 mb-4 sm:m-8">
                     <div className="sm:max-w-2/3 p-6 mx-auto">
                         <Carousel>
                             <PieChart chartType="expense" data={{ ...budget }} />

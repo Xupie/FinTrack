@@ -12,7 +12,8 @@ export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const navLinks = [
-        { href: '/', label: 'FinTrack' }
+        { href: '/', label: 'FinTrack' },
+        { href: '/dashboard', label: 'Dashboard' }
     ]
 
     const handleClick = () => {
@@ -42,15 +43,18 @@ export default function Header() {
 
                 {/* Mobile menu */}
                 <div className='relative md:hidden w-full px-4'>
-                    <button
-                        type='button'
-                        onClick={() => handleClick()}
-                        className={` ms-auto mt-2 items-center  ${isMenuOpen ? 'rotate-90' : 'rotate-0'} transition delay-50 duration-300 `}
-                        aria-controls='mobile-nav'
-                        aria-expanded={isMenuOpen}
-                    >
-                        <HamburgerMenu />
-                    </button>
+                    <div className='flex gap-4 ms-auto mt-2 items-center'>
+                        <button
+                            type='button'
+                            onClick={() => handleClick()}
+                            className={`${isMenuOpen ? 'rotate-90' : 'rotate-0'} transition delay-50 duration-300`}
+                            aria-controls='mobile-nav'
+                            aria-expanded={isMenuOpen}
+                        >
+                            <HamburgerMenu />
+                        </button>
+                        <h1 className='text-2xl'><Link href={`/`}>FinTrack</Link></h1>
+                    </div>
 
                     {isMenuOpen && (
                         <ul
