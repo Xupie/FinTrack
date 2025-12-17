@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 08.12.2025 klo 11:34
+-- Generation Time: 17.12.2025 klo 09:48
 -- Palvelimen versio: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,8 +39,13 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `user_id`, `category_name`, `type`) VALUES
-(1, 1, 'Groceries', 'expense'),
-(2, 1, 'Salary', 'income');
+(13, 1, 'UPDATED', 'expense'),
+(8, 3, 'expense', 'expense'),
+(9, 3, 'Salary', 'income'),
+(6, 3, 'test income', 'income'),
+(15, 4, 'Test expense', 'expense'),
+(14, 4, 'Test income', 'income'),
+(17, 4, 'TESTING', 'income');
 
 -- --------------------------------------------------------
 
@@ -62,9 +67,10 @@ CREATE TABLE `transaction` (
 --
 
 INSERT INTO `transaction` (`id`, `user_id`, `category_id`, `description`, `amount`, `created_at`) VALUES
-(1, 1, 1, 'Buying food', 25.99, '2025-12-08 06:32:49'),
-(4, 1, 2, 'Buying groceries', 45.60, '2025-12-08 07:58:04'),
-(6, 1, 1, 'Freelance project', 750.00, '2025-12-08 07:58:47');
+(7, 3, 8, 'Updated 2', 999.00, '2025-12-09 06:35:34'),
+(8, 3, 6, 'income', 1000.90, '2025-12-09 06:17:06'),
+(9, 4, 14, 'Unknown income', 5000.00, '2025-12-10 09:29:42'),
+(10, 4, 15, 'UPDATED expense', 2500.00, '2025-12-10 09:41:15');
 
 -- --------------------------------------------------------
 
@@ -85,7 +91,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `username`, `password_hash`) VALUES
 (1, 's', '$2y$10$VzEjqrlSFfUZ9/HMUm9izeHEc6qmsZ/HIb2C0YXF0KcM.swk5jJka'),
 (2, 'sd', '$2y$10$MXw71ndzKSIo.x5ixUy0q.AJV5xrpgyw9lTjOr9NLBTZynkLcY4Tq'),
-(3, '1', '$2y$10$pBfBvt9CEsXcgq3/AWlUueyRLqvbjcBCetCBs7hAwCeqzL2/eQ4AW');
+(3, '1', '$2y$10$pBfBvt9CEsXcgq3/AWlUueyRLqvbjcBCetCBs7hAwCeqzL2/eQ4AW'),
+(4, 'test', '$2y$10$8rmGB9uWWIZKSdFuSTDALeehiryPOtmxyBkoDQ./WohNck7JjyEU6');
 
 --
 -- Indexes for dumped tables
@@ -104,7 +111,7 @@ ALTER TABLE `category`
 ALTER TABLE `transaction`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `unique_transaction` (`user_id`,`category_id`,`description`,`created_at`),
-  ADD KEY `category_id` (`category_id`);
+  ADD KEY `transaction_ibfk_2` (`category_id`);
 
 --
 -- Indexes for table `user`
@@ -121,19 +128,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Rajoitteet vedostauluille
@@ -150,7 +157,7 @@ ALTER TABLE `category`
 --
 ALTER TABLE `transaction`
   ADD CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `transaction_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+  ADD CONSTRAINT `transaction_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
