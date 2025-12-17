@@ -41,18 +41,16 @@ export default function EditTransaction({
   const [deleteConfirmVisible, setDeleteConfirmVisible] = useState<boolean>(false);
 
   async function editTransaction() {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/main.php?action=update_transaction`,
-      {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({
-          id: localTransaction.id,
-          description: localTransaction.description,
-          category: localTransaction.category_id,
-          amount: localTransaction.amount,
-        }),
-      },
+    const response = await fetch(`/api/main.php?action=update_transaction`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        id: localTransaction.id,
+        description: localTransaction.description,
+        category: localTransaction.category_id,
+        amount: localTransaction.amount,
+      }),
+    },
     );
 
     if (response.ok) {
@@ -68,15 +66,13 @@ export default function EditTransaction({
   }
 
   async function deleteTransaction() {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/main.php?action=delete_transaction`,
-      {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({
-          id: localTransaction.id,
-        }),
-      },
+    const response = await fetch(`/api//main.php?action=delete_transaction`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        id: localTransaction.id,
+      }),
+    },
     );
 
     if (response.ok) {

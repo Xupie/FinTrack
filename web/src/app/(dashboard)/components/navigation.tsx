@@ -38,18 +38,16 @@ export default function Navigation({ categories, onCreateSuccess }: NavigationPr
       document.querySelector("input[name=description]") as HTMLInputElement
     ).value;
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/main.php?action=add_transaction`,
-      {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({
-          amount: amount,
-          type: type,
-          category: category,
-          description: description,
-        }),
-      },
+    const response = await fetch(`/api/main.php?action=add_transaction`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        amount: amount,
+        type: type,
+        category: category,
+        description: description,
+      }),
+    },
     );
 
     if (response.ok) {
@@ -125,18 +123,16 @@ export function NavigationDesktop({ categories, onCreateSuccess }: NavigationPro
       document.querySelector("input[name=description]") as HTMLInputElement
     ).value;
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/main.php?action=add_transaction`,
-      {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({
-          amount: amount,
-          type: type,
-          category: category,
-          description: description,
-        }),
-      },
+    const response = await fetch(`/api/main.php?action=add_transaction`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        amount: amount,
+        type: type,
+        category: category,
+        description: description,
+      }),
+    },
     );
 
     if (response.ok) {

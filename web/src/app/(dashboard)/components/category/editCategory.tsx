@@ -27,17 +27,15 @@ export default function EditCategory({
   const [deleteConfirmVisible, setDeleteConfirmVisible] = useState<boolean>(false);
 
   async function editCategory() {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/main.php?action=update_category`,
-      {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({
-          category_id: localCategory.id,
-          category_name: localCategory.category_name,
-          type: localCategory.type,
-        }),
-      },
+    const response = await fetch(`/api/main.php?action=update_category`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        category_id: localCategory.id,
+        category_name: localCategory.category_name,
+        type: localCategory.type,
+      }),
+    },
     );
 
     if (response.ok) {
@@ -51,15 +49,13 @@ export default function EditCategory({
   }
 
   async function deleteCategory(id: number) {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/main.php?action=delete_category`,
-      {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({
-          category_id: id,
-        }),
-      },
+    const response = await fetch(`/api/main.php?action=delete_category`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        category_id: id,
+      }),
+    },
     );
 
     if (response.ok) {

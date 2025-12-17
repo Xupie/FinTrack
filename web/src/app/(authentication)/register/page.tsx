@@ -27,15 +27,12 @@ export default function Register() {
     }
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/register.php`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: username, password: password }),
-          credentials: "include",
-        },
-      );
+      const response = await fetch(`/api/register.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: username, password: password }),
+        credentials: "include",
+      });
 
       const data = await response.json();
 

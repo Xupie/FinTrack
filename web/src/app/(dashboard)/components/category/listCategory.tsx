@@ -29,15 +29,13 @@ export default function ListCategory({ close, category }: ListCategoryProps) {
 
   useEffect(() => {
     async function getTransactions() {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/main.php?action=sorted_by_categories`,
-        {
-          method: "POST",
-          credentials: "include",
-          body: JSON.stringify({
-            category_id: category.id,
-          }),
-        },
+      const response = await fetch(`/api/main.php?action=sorted_by_categories`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify({
+          category_id: category.id,
+        }),
+      },
       );
       setTransactions(await response.json());
     }

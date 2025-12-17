@@ -1,8 +1,12 @@
 import { cookies } from "next/headers";
 import ManagementClient from "./managementClient";
+import { redirect } from "next/navigation";
 
 export default async function Management() {
-  const url = process.env.NEXT_PUBLIC_API_URL;
+  const url = process.env.API_INTERNAL_URL;
+  if (!url) {
+    throw new Error("API_INTERNAL_URL is not defined");
+  }
 
   const headers = new Headers();
   const cookieStore = cookies();
@@ -15,6 +19,8 @@ export default async function Management() {
     headers: headers,
     cache: "no-store",
   });
+
+  if (categoriesRes.status === 401) return redirect("/login");
 
   let categories = [];
   if (categoriesRes.ok) {
@@ -35,6 +41,8 @@ export default async function Management() {
       include_transactions: true,
     }),
   });
+
+  if (transactionRes.status === 401) return redirect("/login");
 
   let transactions = [];
   if (transactionRes.ok) {

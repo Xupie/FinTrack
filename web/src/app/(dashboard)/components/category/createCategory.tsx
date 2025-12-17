@@ -22,16 +22,14 @@ export default function CreateCategory({
   const handleCreateCategory = async () => {
     if (!newCatName.trim()) return;
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/main.php?action=add_category`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          category_name: newCatName,
-          type: newCatType,
-        }),
-        credentials: "include",
-      },
+    const response = await fetch(`/api//main.php?action=add_category`, {
+      method: "POST",
+      body: JSON.stringify({
+        category_name: newCatName,
+        type: newCatType,
+      }),
+      credentials: "include",
+    },
     );
 
     if (!response.ok) {

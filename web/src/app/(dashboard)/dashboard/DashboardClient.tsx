@@ -90,7 +90,7 @@ export default function DashboardClient({
     // Fix month that isnt 2 digit
     const monthStr = month.toString().padStart(2, "0");
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/main.php?action=summary`,
+      `/api/main.php?action=summary`,
       {
         method: "POST",
         credentials: "include",

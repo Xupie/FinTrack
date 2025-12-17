@@ -3,8 +3,8 @@ FROM php:8.4.15-apache AS api
 WORKDIR /var/www/html
 
 RUN apt-get update && apt-get install -y \
-    libzip-dev zip unzip libpng-dev libonig-dev libxml2-dev && \
-    docker-php-ext-install mysqli
+  libzip-dev zip unzip libpng-dev libonig-dev libxml2-dev && \
+  docker-php-ext-install mysqli
 
 RUN a2enmod rewrite headers
 
@@ -18,16 +18,11 @@ WORKDIR /usr/src/app/web
 ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
 
-ARG PORT=3000
-
 # Copy package files
 COPY ./web/package.json ./web/package-lock.json* ./
 
 # Install dependencies
-RUN npm install --include=optional --verbose \
-  && npm rebuild lightningcss --build-from-source --verbose
-
-RUN npm install lightningcss-linux-x64-gnu
+RUN npm install --include=optional --verbose
 
 COPY /web .
 

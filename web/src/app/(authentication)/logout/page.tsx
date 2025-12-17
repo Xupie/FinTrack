@@ -8,7 +8,7 @@ export default function Logout() {
 
   useEffect(() => {
     async function logoutUser() {
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/logout.php`, {
+      fetch(`/api/logout.php`, {
         credentials: "include",
       });
       localStorage.removeItem("username");
