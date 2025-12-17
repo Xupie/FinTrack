@@ -24,18 +24,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: web-dev
+      target: web-prod
     ports:
       - "3001:3001"
     volumes:
-        - ./web/src:/usr/src/app/web/src
-        - ./web/public:/usr/src/app/web/public
-        - ./web/.env:/usr/src/app/web/.env
-        - ./web/.next:/usr/src/app/web/.next
+      - ./web:/usr/src/app/web
     depends_on:
       - db
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
 
   db:
     image: mysql:8.4.7
@@ -49,19 +46,6 @@ services:
       - "3307:3306"
     volumes:
       - ./mysql_data:/var/lib/mysql
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: fintrack-phpmyadmin-dev
-    restart: always
-    environment:
-      PMA_HOST: db
-      PMA_USER: ${DB_USER}
-      PMA_PASSWORD: ${DB_PASS}
-    ports:
-      - "8081:80"
-    depends_on:
-      - db
 
 volumes:
   mysql_data:

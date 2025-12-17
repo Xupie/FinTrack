@@ -1,3 +1,28 @@
-/mysql_data
-/web/.next
-/web/node_modules
+# node / next
+node_modules
+**/node_modules
+.next
+**/.next
+
+# pnpm
+.pnpm-store
+**/.pnpm-store
+
+# databases
+mysql_data
+**/mysql_data
+
+# git
+.git
+.gitignore
+
+# logs
+*.log
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# build output
+dist
+build

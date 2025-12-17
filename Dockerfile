@@ -10,22 +10,48 @@ RUN a2enmod rewrite headers
 
 EXPOSE 80
 
-# web-development
-FROM node:22-slim AS web-development
+# web-dev
+FROM node:22-slim AS web-dev
 WORKDIR /usr/src/app/web
 
 # Set environment
 ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV CI=true
+
+RUN corepack enable
 
 # Copy package files
-COPY ./web/package.json ./web/package-lock.json* ./
+COPY web/package.json web/pnpm-lock.yaml ./
+RUN pnpm install
 
-# Install dependencies
-RUN npm install --include=optional --verbose
-
-COPY /web .
+COPY web/src ./src
+COPY web/public ./public
+COPY web/next.config.ts ./
+COPY web/tsconfig.json ./
+COPY web/postcss.config.mjs ./
+COPY web/tailwind.config.js ./
 
 EXPOSE 3001
 
-CMD ["npm", "run", "dev"]
+CMD ["pnpm", "dev"]
+
+# web-prod
+FROM node:22-slim AS web-prod
+WORKDIR /usr/src/app/web
+
+# Set environment
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN corepack enable
+
+# Copy package files
+COPY web/package.json web/pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile --prod
+
+# Install dependencies
+RUN pnpm run build
+
+EXPOSE 3001
+CMD ["sh", "-c", "pnpm install && pnpm run start"]
