@@ -52,41 +52,45 @@ export default function Register() {
   }
 
   return (
-    <main>
-      <div className="">
+  <main className="main-container">
+    <section className="login-card">
+      <h1>REGISTER PAGE</h1>
+
+      <div className="input-group">
         <label htmlFor="username">Username</label>
-        <InputWithIcon
+        <input
+          type="text"
           name="username"
-          placeholder="username"
-          icon="/email/email.svg"
+          placeholder="Enter your username"
           required
         />
       </div>
 
-      <div>
+      <div className="input-group password">
         <label htmlFor="password">Password</label>
-        <InputWithIcon
+        <input
+          type="password"
           name="password"
-          placeholder="password"
-          icon="/password/password.svg"
+          placeholder="Enter your password"
           required
         />
       </div>
 
-      <Button
-        onClick={sendRegister}
-        disabled={loading}
-        size="lg"
-        text="Register"
-        type="primary"
-      />
-      {error ? (
-        <div className="bg-error-bg text-error-text py-2 px-2 rounded">
-          <p>Wrong username or password!</p>
+      <button onClick={sendRegister} disabled={loading} className="login-button">
+        Register
+      </button>
+
+      {error && (
+        <div className="error-msg">
+          Wrong username or password!
         </div>
-      ) : (
-        ""
       )}
-    </main>
+
+      <p className="login-footer">
+        Already have an account? <a href="/login">Log In</a>
+      </p>
+    </section>
+  </main>
+
   );
 }
