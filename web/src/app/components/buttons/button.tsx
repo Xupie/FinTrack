@@ -3,13 +3,14 @@ import styles from "./button.module.css";
 export const buttonSizes = ["xs", "sm", "md", "lg", "xl"] as const;
 type buttonSize = (typeof buttonSizes)[number];
 
-export const buttonType = ["primary", "outlined", "cancel", "secondary"] as const;
+export const buttonType = ["primary", "outlined", "cancel", "secondary", "login"] as const;
 type buttonType = (typeof buttonType)[number];
 
 type buttonProps = {
   size: buttonSize;
   disabled?: boolean;
   rounded?: boolean;
+  fullWidth?: boolean
   type: buttonType;
   onClick?: () => void;
   text: string;
@@ -28,6 +29,7 @@ export default function Button({
   disabled = false,
   rounded = true,
   type,
+  fullWidth,
   onClick,
   text,
 }: buttonProps) {
@@ -40,6 +42,7 @@ export default function Button({
       style={{
         opacity,
         cursor: disabled ? "not-allowed" : "pointer",
+        width: fullWidth ? "100%" : "auto",
         ...Object.fromEntries(
           sizeStyles[size]
             .split(";")

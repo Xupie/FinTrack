@@ -10,7 +10,7 @@ export default function ErrorBox({
   if (!text) return null;
 
   return (
-    <div className="bg-cancel flex justify-between items-center rounded-sm px-4 py-2 w-3/5 mx-auto my-3">
+    <div className="bg-cancel flex justify-between items-center rounded-sm px-4 py-2 mx-auto my-3">
       <p>{text}</p>
 
       <button

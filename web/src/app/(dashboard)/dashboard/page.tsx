@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import DashboardClient from "./dashboardClient";
+import DashboardClient from "./DashboardClient";
 
 export default async function Dashboard() {
   const url = process.env.API_INTERNAL_URL;

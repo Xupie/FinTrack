@@ -7,6 +7,15 @@
   background-color: var(--color-primary-hover);
 }
 
+.btn-login {
+  background-color: var(--color-primary-hover);
+  color: white;
+}
+
+.btn-login:hover {
+  background-color: #4e2d92;
+}
+
 .btn-outlined {
   color: var(--color-primary);
   border: 2px solid var(--color-primary);
