@@ -211,6 +211,7 @@ if ($action === 'add_transaction') {
 if ($action === 'delete_transaction') {
     $data = json_decode(file_get_contents("php://input"), true);
     $id = trim($data['id']); // taking id from user's input
+    $user_id = $_SESSION['user_id'];
 
     if (!ctype_digit($id)) { // checking for type of input if it is wrong => error
         http_response_code(400);

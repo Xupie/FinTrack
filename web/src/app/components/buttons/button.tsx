@@ -3,7 +3,7 @@ import styles from "./button.module.css";
 export const buttonSizes = ["xs", "sm", "md", "lg", "xl"] as const;
 type buttonSize = (typeof buttonSizes)[number];
 
-export const buttonType = ["primary", "outlined", "cancel"] as const;
+export const buttonType = ["primary", "outlined", "cancel", "secondary"] as const;
 type buttonType = (typeof buttonType)[number];
 
 type buttonProps = {

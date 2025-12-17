@@ -1,7 +1,8 @@
-import { useState } from "react";
-import ErrorBox from "../ui/error";
 import Button from "@/app/components/buttons/button";
 import Image from "next/image";
+import { useState } from "react";
+import DeleteConfirm from "../ui/delete_confirmation";
+import ErrorBox from "../ui/error";
 
 type Category = {
   id: number;
@@ -22,6 +23,8 @@ export default function EditCategory({
 }: EditCategoryProps) {
   const [error, setError] = useState("");
   const [localCategory, setLocalCategory] = useState<Category>(category);
+  const [ellipsisMenuVisible, setEllipsisMenuVisible] = useState<boolean>(false);
+  const [deleteConfirmVisible, setDeleteConfirmVisible] = useState<boolean>(false);
 
   async function editCategory() {
     const response = await fetch(
@@ -78,23 +81,55 @@ export default function EditCategory({
     editCategory();
   }
 
+  function handleDelete() {
+    deleteCategory(localCategory.id);
+    setDeleteConfirmVisible(false);
+    close();
+  }
+
   return (
     // Full-screen overlay
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       {/* Modal container */}
       <div className="bg-surface rounded-lg shadow-xl w-full max-w-3xl p-6 relative">
-        <ErrorBox onClose={() => setError("")} text={error} />
 
-        <div className="flex mb-4">
+        {deleteConfirmVisible && (
+          <DeleteConfirm
+            onConfirm={() => handleDelete()}
+            onCancel={() => setDeleteConfirmVisible(!deleteConfirmVisible)}
+            text={`Are you sure you want to delete category: '${category.category_name}'?`}
+          />
+        )}
+
+        <div className="flex h-14">
           <h1 className="text-2xl font-bold">Edit Category</h1>
-          <button type="button" className="flex ms-auto cursor-pointer">
-            <Image
-              src={`edit-dots.svg`}
-              alt="edit-dots"
-              height={25}
-              width={25}
-            />
-          </button>
+
+          {/* Eclipsis menu / 3 dots */}
+          <div className="relative ms-auto">
+            <button
+              type="button"
+              className="cursor-pointer ms-auto flex"
+              onClick={() => setEllipsisMenuVisible(!ellipsisMenuVisible)}
+            >
+              <Image
+                src={`edit-dots.svg`}
+                alt="edit-dots"
+                height={25}
+                width={25}
+              />
+            </button>
+            {ellipsisMenuVisible && (
+              <div className="p-1 bg-surface2 rounded-sm">
+                <button
+                  type="button"
+                  className="cursor-pointer"
+                  onClick={() => setDeleteConfirmVisible(true)}
+                >
+                  Delete</button>
+              </div>
+            )}
+          </div>
+
         </div>
 
         {/* Category Name */}
@@ -148,14 +183,21 @@ export default function EditCategory({
           </label>
         </div>
 
+        <ErrorBox onClose={() => setError("")} text={error} />
+
         {/* Buttons */}
         <div className="flex justify-around mt-4">
-          <Button size="lg" text="Cancel" type="cancel" onClick={close} />
           <Button
             size="lg"
             text="Update"
             type="primary"
             onClick={handleCategoryUpdate}
+          />
+          <Button
+            size="lg"
+            text="Cancel"
+            type="cancel"
+            onClick={close}
           />
         </div>
       </div>

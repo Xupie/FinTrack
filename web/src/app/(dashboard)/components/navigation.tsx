@@ -13,9 +13,10 @@ type CategoryType = {
 
 type NavigationProps = {
   categories: CategoryType[];
+  onCreateSuccess?: () => void;
 };
 
-export default function Navigation({ categories }: NavigationProps) {
+export default function Navigation({ categories, onCreateSuccess }: NavigationProps) {
   const [newTransactionVisible, setNewTransactionVisible] = useState(false);
   const router = useRouter();
 
@@ -53,6 +54,7 @@ export default function Navigation({ categories }: NavigationProps) {
 
     if (response.ok) {
       setNewTransactionVisible(false);
+      if (typeof onCreateSuccess === "function") onCreateSuccess();
     }
   }
 
@@ -101,7 +103,7 @@ export default function Navigation({ categories }: NavigationProps) {
   );
 }
 
-export function NavigationDesktop({ categories }: NavigationProps) {
+export function NavigationDesktop({ categories, onCreateSuccess }: NavigationProps) {
   const [newTransactionVisible, setNewTransactionVisible] = useState(false);
   const router = useRouter();
 
@@ -139,6 +141,7 @@ export function NavigationDesktop({ categories }: NavigationProps) {
 
     if (response.ok) {
       setNewTransactionVisible(false);
+      if (typeof onCreateSuccess === "function") onCreateSuccess();
     }
   }
 

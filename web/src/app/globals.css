@@ -13,7 +13,7 @@
   --color-cancel-hover: #df463b;
 
   --color-surface: #232323;
-  --color-surface2: #2c2c2c;
+  --color-surface2: #2d2d2d;
 }
 
 [data-theme="light"] {
@@ -34,6 +34,9 @@
   --color-primary: var(--color-primary);
   --color-primary-hover: var(--color-primary-hover);
   --color-surface: var(--color-surface);
+  --color-surface2: var(--color-surface2);
+  --color-cancel: var(--color-cancel);
+  --color-cancel-hover: var(--color-cancel-hover);
 }
 
 body {

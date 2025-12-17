@@ -68,8 +68,6 @@ export default function NewTransaction({
       <div className="bg-surface rounded-lg shadow-xl w-full max-w-3xl p-6 relative">
         <h1 className="text-2xl font-bold mb-4">New Transaction</h1>
 
-        <ErrorBox onClose={() => setError("")} text={error} />
-
         <div className="flex flex-col mx-auto sm:w-3/5 gap-4">
           {/* Amount */}
           <div>
@@ -157,14 +155,21 @@ export default function NewTransaction({
           </div>
         </div>
 
+        <ErrorBox onClose={() => setError("")} text={error} />
+
         {/* Buttons */}
         <div className="flex justify-around mt-4">
-          <Button size="lg" text="Cancel" type="cancel" onClick={cancel} />
           <Button
             size="lg"
             text="Create"
             type="primary"
             onClick={onCreateTransaction}
+          />
+          <Button
+            size="lg"
+            text="Cancel"
+            type="cancel"
+            onClick={cancel}
           />
         </div>
       </div>

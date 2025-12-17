@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import Button from "@/app/components/buttons/button";
 export default function DashboardHeader() {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [username, setUsername] = useState<string | null>(null);
 
   const navLinks = [
     { href: "/dashboard", label: "Dashboard" },
@@ -20,6 +21,10 @@ export default function DashboardHeader() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  useEffect(() => {
+    setUsername(localStorage.getItem("username"));
+  }, []);
+
   return (
     <header>
       <nav className="w-full flex flex-col md:flex-row justify-between items-center">
@@ -30,7 +35,7 @@ export default function DashboardHeader() {
           </h1>
 
           <div className="flex items-center gap-4">
-            <p>Logged in as</p>
+            <p>Logged in as <strong>{username}</strong></p>
             <Button
               size="md"
               type="primary"
@@ -73,7 +78,9 @@ export default function DashboardHeader() {
                   </Link>
                 </li>
               ))}
-              <div className="gap-4 my-4 ms-auto">
+              <div className="gap-4 my-4 flex ms-auto items-center">
+                <p>Logged in as <strong>{username}</strong></p>
+
                 <Button
                   size="md"
                   type="primary"
