@@ -1,3 +1,3 @@
 module.exports = {
-    darkMode: ['selector', '[data-mode="dark"]'],
-}
+  darkMode: ["selector", '[data-mode="dark"]'],
+};

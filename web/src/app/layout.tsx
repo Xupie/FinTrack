@@ -11,7 +11,7 @@ const geistMono = Geist_Mono({
 const quicksand = Quicksand({
   variable: "--font-quicksand",
   subsets: ["latin"],
-})
+});
 
 export const metadata: Metadata = {
   title: "FinTrack",
@@ -28,9 +28,7 @@ export default function RootLayout({
       <body
         className={`${quicksand.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

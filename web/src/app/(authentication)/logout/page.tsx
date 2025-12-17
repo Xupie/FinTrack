@@ -1,23 +1,21 @@
-"use client"
+"use client";
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Logout() {
-    const router = useRouter();
+  const router = useRouter();
 
-    useEffect(() => {
-        async function logoutUser() {
-            fetch(`${process.env.NEXT_PUBLIC_API_URL}/logout.php`, {
-                credentials: "include",
-            })
-            router.push("/login");
-        }
+  useEffect(() => {
+    async function logoutUser() {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/logout.php`, {
+        credentials: "include",
+      });
+      router.push("/login");
+    }
 
-        logoutUser();
-    }, [router])
+    logoutUser();
+  }, [router]);
 
-    return (
-        <p>logging out...</p>
-    )
+  return <p>logging out...</p>;
 }

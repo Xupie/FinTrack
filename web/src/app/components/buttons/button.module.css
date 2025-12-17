@@ -1,37 +1,36 @@
 .btn-primary {
-    background-color: var(--color-primary);
-    color: white;
-    font-weight: bolder;
+  background-color: var(--color-primary);
+  color: white;
+  font-weight: bolder;
 }
 .btn-primary:hover {
-    background-color: var(--color-primary-hover);
+  background-color: var(--color-primary-hover);
 }
 
 .btn-outlined {
-    color: var(--color-primary);
-    border: 2px solid var(--color-primary);
-    font-weight: bolder;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  font-weight: bolder;
 }
 .btn-outlined:hover {
-    background-color: var(--color-primary-hover);
-    color: var(--color-foreground);
+  background-color: var(--color-primary-hover);
+  color: var(--color-foreground);
 }
-
 
 .btn-cancel {
-    color: white;
-    background-color: var(--color-cancel);
-    font-weight: bolder;
+  color: white;
+  background-color: var(--color-cancel);
+  font-weight: bolder;
 }
 .btn-cancel:hover {
-    background-color: var(--color-cancel-hover);
+  background-color: var(--color-cancel-hover);
 }
 
 .btn {
-    transition: cubic-bezier();
-    transition-duration: 350ms;
+  transition: cubic-bezier();
+  transition-duration: 350ms;
 }
 .btn:hover {
-    transition: cubic-bezier();
-    transition-duration: 350ms;
+  transition: cubic-bezier();
+  transition-duration: 350ms;
 }

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import Image from "next/image";
-import Header from "./components/header";
-import Button from "./components/buttons/button";
-import Carousel from "./(dashboard)/components/carousel";
 import { useRouter } from "next/navigation";
+import Carousel from "./(dashboard)/components/carousel";
+import Button from "./components/buttons/button";
 import Footer from "./components/footer";
+import Header from "./components/header";
 
 export default function Home() {
   const router = useRouter();
@@ -13,18 +13,16 @@ export default function Home() {
     <>
       <Header />
       <main className="max-w-7xl mx-auto px-4">
-
-        {/* Hero Section */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center my-4">
-          {/* Text */}
           <div className="space-y-6">
             <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-              Manage Your <span className="text-primary">Finances</span> with Confidence
+              Manage Your <span className="text-primary">Finances</span> with
+              Confidence
             </h1>
 
             <p className="text-gray-400 text-lg">
-              FinTrack helps you keep track of your expenses, organize categories,
-              and get a clear view of how you spend your money.
+              FinTrack helps you keep track of your expenses, organize
+              categories, and get a clear view of how you spend your money.
             </p>
 
             <div className="flex gap-4">
@@ -45,7 +43,6 @@ export default function Home() {
 
           {/* Images */}
           <div className="relative w-full h-160 md:h-[420px]">
-
             {/* Desktop Image */}
             <Image
               src="/examples/desktop/1.png"
@@ -75,7 +72,9 @@ export default function Home() {
           </div>
 
           <div className="border rounded-lg p-6">
-            <h3 className="font-semibold text-lg mb-2">📱 Works on Any Device</h3>
+            <h3 className="font-semibold text-lg mb-2">
+              📱 Works on Any Device
+            </h3>
             <p className="text-gray-400">
               A responsive design that looks good on desktop and mobile.
             </p>
@@ -84,7 +83,8 @@ export default function Home() {
           <div className="border rounded-lg p-6">
             <h3 className="font-semibold text-lg mb-2">🔒 Data Privacy</h3>
             <p className="text-gray-400">
-              Your financial information is stored securely and handled with care.
+              Your financial information is stored securely and handled with
+              care.
             </p>
           </div>
         </section>
@@ -123,7 +123,7 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <Footer/>
+      <Footer />
     </>
   );
 }
