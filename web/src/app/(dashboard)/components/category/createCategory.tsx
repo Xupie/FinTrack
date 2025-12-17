@@ -94,15 +94,15 @@ export default function CreateCategory({
         <div className="flex justify-between mt-4">
           <Button
             size="lg"
-            text="Cancel"
-            type="cancel"
-            onClick={() => close()}
-          />
-          <Button
-            size="lg"
             text="Create"
             type="primary"
             onClick={handleCreateCategory}
+          />
+          <Button
+            size="lg"
+            text="Cancel"
+            type="cancel"
+            onClick={() => close()}
           />
         </div>
       </div>

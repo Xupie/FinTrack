@@ -11,7 +11,9 @@ export default function Logout() {
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/logout.php`, {
         credentials: "include",
       });
+      localStorage.removeItem("username");
       router.push("/login");
+      return;
     }
 
     logoutUser();

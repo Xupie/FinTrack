@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Carousel from "./(dashboard)/components/carousel";
+import Carousel from "./components/carousel";
 import Button from "./components/buttons/button";
 import Footer from "./components/footer";
 import Header from "./components/header";

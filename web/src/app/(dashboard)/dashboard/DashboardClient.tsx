@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { NavigationDesktop } from "../components/navigation";
-import Carousel from "../components/carousel";
+import Carousel from "../../components/carousel";
 import PieChart from "../components/chart/pie";
 import Calendar from "../components/calendar";
 import Image from "next/image";
@@ -29,7 +29,7 @@ type categoryType = {
   category_name: string;
   id: number;
   type: string;
-}[];
+};
 
 export default function DashboardClient({
   initialBudget,
@@ -37,12 +37,12 @@ export default function DashboardClient({
   initialDate,
 }: {
   initialBudget: budgetType | null;
-  initialCategories: categoryType;
+  initialCategories: categoryType[];
   initialDate: Date;
 }) {
   const router = useRouter();
   const [budget, setBudget] = useState<budgetType | null>(initialBudget);
-  const [categories, setCategories] = useState<categoryType>(initialCategories);
+  const [categories, setCategories] = useState<categoryType[]>(initialCategories);
   const [selectedDate, setSelectedDate] = useState<Date>(initialDate);
   const [listMenuVisible, setListMenuVisible] = useState(false);
   const [selectedCategoryItem, setSelectedCategoryItem] = useState<
@@ -72,6 +72,19 @@ export default function DashboardClient({
     getDashboardData();
   }, [selectedDate]);
 
+  // Sync server-provided props to client state when route refresh updates them
+  useEffect(() => {
+    setBudget(initialBudget);
+  }, [initialBudget]);
+
+  useEffect(() => {
+    setCategories(initialCategories);
+  }, [initialCategories]);
+
+  useEffect(() => {
+    setSelectedDate(initialDate);
+  }, [initialDate]);
+
   // Returns data of month
   async function getDataOfMonth(month: number, year: number) {
     // Fix month that isnt 2 digit
@@ -98,6 +111,13 @@ export default function DashboardClient({
     return await response.json();
   }
 
+  // Refresh dashboard data client-side (used after client-side mutations)
+  async function refreshDashboardData() {
+    const date = selectedDate || initialDate;
+    const data = await getDataOfMonth(date.getMonth() + 1, date.getFullYear());
+    setBudget(data);
+  }
+
   function openListCategory(category: (typeof categories)[number]) {
     setSelectedCategoryItem(category);
     setListMenuVisible(true);
@@ -107,16 +127,19 @@ export default function DashboardClient({
 
   return (
     <>
-      <Navigation categories={categories} />
+      <Navigation categories={categories} onCreateSuccess={refreshDashboardData} />
 
       <main className="max-w-7xl mx-auto">
+
         <div className="sm:grid sm:grid-cols-2 mx-4 mb-4 sm:m-8">
+          {/* Chart */}
           <div className="sm:max-w-2/3 p-6 mx-auto">
             <Carousel>
               <PieChart chartType="expense" data={{ ...budget }} />
               <PieChart chartType="income" data={{ ...budget }} />
             </Carousel>
           </div>
+
           <div className="bg-surface rounded-lg p-4">
             <Calendar date={selectedDate} onChangeDate={setSelectedDate} />
             {budget && (
@@ -145,7 +168,10 @@ export default function DashboardClient({
                 </div>
 
                 <div className="hidden sm:block mt-16">
-                  <NavigationDesktop categories={categories} />
+                  <NavigationDesktop
+                    categories={categories}
+                    onCreateSuccess={refreshDashboardData}
+                  />
                 </div>
               </div>
             )}

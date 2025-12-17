@@ -40,7 +40,7 @@ export default function Register() {
       const data = await response.json();
 
       if (response.ok) {
-        router.push("/dashboard");
+        router.push("/login");
         return;
       }
 

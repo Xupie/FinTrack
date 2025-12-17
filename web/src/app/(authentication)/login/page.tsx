@@ -41,6 +41,7 @@ export default function Login() {
 
       if (response.ok) {
         router.push("/dashboard");
+        localStorage.setItem("username", username);
         return;
       }
 

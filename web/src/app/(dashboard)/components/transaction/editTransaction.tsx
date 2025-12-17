@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import ErrorBox from "../ui/error";
+import ErrorBox from "../../../components/error";
 import Button from "@/app/components/buttons/button";
 import Image from "next/image";
+import DeleteConfirm from "../ui/delete_confirmation";
 
 type Transaction = {
   id: number;
@@ -22,17 +23,22 @@ type Category = {
 };
 
 type EditTransactionProps = {
-  data: Transaction;
+  transaction: Transaction;
   categories: Category[];
   setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
   close: () => void;
 };
 
-export default function EditTransaction(props: EditTransactionProps) {
+export default function EditTransaction({
+  transaction,
+  categories,
+  setTransactions,
+  close,
+}: EditTransactionProps) {
   const [error, setError] = useState("");
-  const [localTransaction, setLocalTransaction] = useState<Transaction>(
-    props.data,
-  );
+  const [localTransaction, setLocalTransaction] = useState<Transaction>(transaction);
+  const [ellipsisMenuVisible, setEllipsisMenuVisible] = useState<boolean>(false);
+  const [deleteConfirmVisible, setDeleteConfirmVisible] = useState<boolean>(false);
 
   async function editTransaction() {
     const response = await fetch(
@@ -50,14 +56,33 @@ export default function EditTransaction(props: EditTransactionProps) {
     );
 
     if (response.ok) {
-      props.setTransactions((prev) =>
-        prev.map((transaction) =>
-          transaction.id === localTransaction.id
+      setTransactions((prev) =>
+        prev.map((tx) =>
+          tx.id === localTransaction.id
             ? localTransaction
-            : transaction,
+            : tx,
         ),
       );
-      props.close();
+      close();
+    }
+  }
+
+  async function deleteTransaction() {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/main.php?action=delete_transaction`,
+      {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify({
+          id: localTransaction.id,
+        }),
+      },
+    );
+
+    if (response.ok) {
+      setTransactions((prev) =>
+        prev.filter((tx) => tx.id === localTransaction.id),
+      );
     }
   }
 
@@ -79,24 +104,55 @@ export default function EditTransaction(props: EditTransactionProps) {
     editTransaction();
   }
 
+  function handleDelete() {
+    deleteTransaction();
+    setDeleteConfirmVisible(false);
+    close();
+  }
+
   return (
     // Full-screen overlay
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       {/* Modal container */}
       <div className="bg-surface rounded-lg shadow-xl w-full max-w-3xl p-6 relative">
+
+        {deleteConfirmVisible && (
+          <DeleteConfirm
+            onConfirm={() => handleDelete()}
+            onCancel={() => setDeleteConfirmVisible(!deleteConfirmVisible)}
+            text={`Are you sure you want to delete transaction: '${localTransaction.description}'?`}
+          />
+        )}
+
         <div className="flex mb-4">
           <h1 className="text-2xl font-bold">Edit Transaction</h1>
-          <button type="button" className="flex ms-auto cursor-pointer">
-            <Image
-              src={`edit-dots.svg`}
-              alt="edit-dots"
-              height={25}
-              width={25}
-            />
-          </button>
-        </div>
 
-        <ErrorBox onClose={() => setError("")} text={error} />
+          {/* Eclipsis menu / 3 dots */}
+          <div className="relative ms-auto">
+            <button
+              type="button"
+              className="cursor-pointer ms-auto flex"
+              onClick={() => setEllipsisMenuVisible(!ellipsisMenuVisible)}
+            >
+              <Image
+                src={`edit-dots.svg`}
+                alt="edit-dots"
+                height={25}
+                width={25}
+              />
+            </button>
+            {ellipsisMenuVisible && (
+              <div className="p-1 bg-surface2 rounded-sm">
+                <button
+                  type="button"
+                  className="cursor-pointer"
+                  onClick={() => setDeleteConfirmVisible(true)}
+                >
+                  Delete</button>
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* Amount */}
         <label
@@ -159,7 +215,7 @@ export default function EditTransaction(props: EditTransactionProps) {
             })
           }
         >
-          {props.categories.map((category) => (
+          {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.category_name}
             </option>
@@ -188,14 +244,21 @@ export default function EditTransaction(props: EditTransactionProps) {
           }
         />
 
+        <ErrorBox onClose={() => setError("")} text={error} />
+
         {/* Buttons */}
         <div className="flex justify-around mt-4">
-          <Button size="xl" text="Cancel" type="cancel" onClick={props.close} />
           <Button
             size="xl"
             text="Update"
             type="primary"
             onClick={handleTransactionUpdate}
+          />
+          <Button
+            size="xl"
+            text="Cancel"
+            type="cancel"
+            onClick={close}
           />
         </div>
       </div>

@@ -257,7 +257,7 @@ export default function ManagementClient({
 
       {editMenuVisible && editType === "transaction" && selectedTransaction && (
         <EditTransaction
-          data={selectedTransaction}
+          transaction={selectedTransaction}
           setTransactions={setTransactions}
           categories={categories}
           close={() => setEditMenuVisible(false)}
