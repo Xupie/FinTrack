@@ -94,3 +94,62 @@ select option:hover {
 select {
   border: none;
 }
+.main-container {
+  @apply min-h-screen flex items-center justify-center p-4;
+}
+
+.login-card {
+  @apply w-full max-w-sm rounded-2xl shadow-xl p-8;
+  background-color: #7b46e5;
+}
+
+.login-card h1 {
+  @apply text-3xl font-bold text-center mb-6;
+  color: white;
+}
+
+.input-group {
+  @apply mb-4;
+}
+
+.input-group label {
+  @apply block mb-1 font-medium text-gray-300;
+}
+
+.input-group input {
+  @apply w-full px-4 py-3 rounded-xl border border-gray-600 focus:outline-none focus:ring-2 transition;
+  background-color: var(--background);
+  color: white;
+  border-color: #444;
+}
+
+.input-group.password {
+  @apply mb-6;
+}
+
+.login-button {
+  @apply w-full py-3 rounded-xl font-semibold text-white transition;
+  background-color: var(--color-primary-hover);
+  border: none;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #4e2d92;
+}
+
+.error-msg {
+  @apply py-2 px-3 rounded-lg mt-4 text-center text-sm;
+  background-color: #550000;
+  color: #ff9999;
+}
+
+.login-footer {
+  @apply mt-6 text-center text-gray-400 text-sm;
+  color: #ffffff;
+}
+
+.login-footer a {
+  @apply font-medium hover:underline;
+  color: #a6f40b;
+}
