@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { NavigationDesktop } from "../components/navigation";
-import Carousel from "../components/carousel";
+import Carousel from "../../components/carousel";
 import PieChart from "../components/chart/pie";
 import Calendar from "../components/calendar";
 import Image from "next/image";

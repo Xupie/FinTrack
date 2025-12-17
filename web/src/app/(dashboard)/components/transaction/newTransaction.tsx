@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Button from "../../../components/buttons/button";
-import ErrorBox from "../ui/error";
+import ErrorBox from "../../../components/error";
 import CreateCategory from "../category/createCategory";
 
 type Category = {

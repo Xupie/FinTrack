@@ -2,7 +2,7 @@ import Button from "@/app/components/buttons/button";
 import Image from "next/image";
 import { useState } from "react";
 import DeleteConfirm from "../ui/delete_confirmation";
-import ErrorBox from "../ui/error";
+import ErrorBox from "../../../components/error";
 
 type Category = {
   id: number;

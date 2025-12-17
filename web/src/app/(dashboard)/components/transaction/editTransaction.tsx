@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ErrorBox from "../ui/error";
+import ErrorBox from "../../../components/error";
 import Button from "@/app/components/buttons/button";
 import Image from "next/image";
 import DeleteConfirm from "../ui/delete_confirmation";
