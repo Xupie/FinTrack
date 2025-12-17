@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { Providers } from "../providers";
-import DashboardHeader from "./components/header";
+import Header from "./components/header";
 
 export const metadata: Metadata = {
   title: "FinTrack - Dashboard",
@@ -14,7 +14,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <Providers>
-      <DashboardHeader/>
+      <Header />
       {children}
     </Providers>
   );

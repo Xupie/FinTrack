@@ -16,7 +16,7 @@
   --color-surface2: #2c2c2c;
 }
 
-[data-theme='light'] {
+[data-theme="light"] {
   --background: #ffffff;
   --foreground: #171717;
 
@@ -40,7 +40,9 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-mono);
-  transition: background 300ms ease, color 300ms ease;
+  transition:
+    background 300ms ease,
+    color 300ms ease;
 }
 
 .nav-link {
@@ -48,7 +50,7 @@ body {
   font-size: 1.2rem;
 }
 
-[data-theme='light'] {
+[data-theme="light"] {
   .nav-link:hover {
     color: var(--color-hover);
   }
@@ -59,7 +61,7 @@ body {
   }
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   .nav-link:hover {
     color: var(--color-hover);
   }

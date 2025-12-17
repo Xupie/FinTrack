@@ -1,9 +1,3 @@
-
-
 export default function Options() {
-    return (
-        <main>
-            
-        </main>
-    )
+  return <main></main>;
 }
