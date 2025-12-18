@@ -28,10 +28,10 @@ services:
     ports:
       - "3001:3001"
     volumes:
-        - ./web/src:/usr/src/app/web/src
-        - ./web/public:/usr/src/app/web/public
-        - ./web/.env:/usr/src/app/web/.env
-        - ./web/.next:/usr/src/app/web/.next
+      - ./web/src:/usr/src/app/web/src
+      - ./web/public:/usr/src/app/web/public
+      - ./web/.env:/usr/src/app/web/.env
+      - ./web/.next:/usr/src/app/web/.next
     depends_on:
       - db
     environment:

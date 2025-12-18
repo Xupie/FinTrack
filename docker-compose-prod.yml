@@ -27,8 +27,6 @@ services:
       target: web-prod
     ports:
       - "3001:3001"
-    volumes:
-      - ./web:/usr/src/app/web
     depends_on:
       - db
     environment:

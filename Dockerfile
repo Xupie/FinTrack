@@ -48,10 +48,23 @@ RUN corepack enable
 
 # Copy package files
 COPY web/package.json web/pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile --prod
 
-# Install dependencies
+# Install deps
+RUN pnpm install --frozen-lockfile
+
+# Copy source
+COPY web/src ./src
+COPY web/public ./public
+COPY web/next.config.ts ./
+COPY web/tsconfig.json ./
+COPY web/postcss.config.mjs ./
+COPY web/tailwind.config.js ./
+COPY web/.env ./
+
+# Build
 RUN pnpm run build
 
+RUN pnpm prune --prod
+
 EXPOSE 3001
-CMD ["sh", "-c", "pnpm install && pnpm run start"]
+CMD ["pnpm", "start"]
