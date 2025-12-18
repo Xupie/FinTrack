@@ -27,6 +27,7 @@ type EditTransactionProps = {
   categories: Category[];
   setTransactions: React.Dispatch<React.SetStateAction<Transaction[]>>;
   close: () => void;
+  onDelete?: () => void;
 };
 
 export default function EditTransaction({
@@ -34,6 +35,7 @@ export default function EditTransaction({
   categories,
   setTransactions,
   close,
+  onDelete,
 }: EditTransactionProps) {
   const [error, setError] = useState("");
   const [localTransaction, setLocalTransaction] = useState<Transaction>(transaction);
@@ -77,8 +79,9 @@ export default function EditTransaction({
 
     if (response.ok) {
       setTransactions((prev) =>
-        prev.filter((tx) => tx.id === localTransaction.id),
+        prev.filter((tx) => tx.id !== localTransaction.id),
       );
+      if (typeof onDelete === "function") onDelete();
     }
   }
 

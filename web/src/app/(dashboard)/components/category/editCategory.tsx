@@ -14,11 +14,13 @@ type EditCategoryProps = {
   category: Category;
   setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
   close: () => void;
+  onDelete?: () => void;
 };
 
 export default function EditCategory({
   setCategories,
   close,
+  onDelete,
   category,
 }: EditCategoryProps) {
   const [error, setError] = useState("");
@@ -55,13 +57,13 @@ export default function EditCategory({
       body: JSON.stringify({
         category_id: id,
       }),
-    },
-    );
+    });
 
     if (response.ok) {
       setCategories((prev) =>
-        prev.filter((category) => category.id === localCategory.id),
+        prev.filter((category) => category.id !== id),
       );
+      if (typeof onDelete === "function") onDelete();
     }
   }
 
